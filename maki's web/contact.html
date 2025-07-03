@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SweetBee Honey Shop - Contact</title>
+
+    <!-- Font Awesome CSS CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-title">
+                <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
+                <h1>SweetBee Honey</h1>
+            </div>
+            <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+            <nav id="navbar">
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <h2 class="section-title" align="center">Get in Touch</h2>
+        <div class="contact-form-container">
+            <form onsubmit="return validateForm()" method="post" class="contact-form">
+                <fieldset>
+                    <div class="form-row">
+                        <label for="name">Full Name</label>
+                        <input type="text" name="name" id="name" placeholder="e.g. Aman Biruk" required />
+                    </div>
+
+                    <div class="form-row">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" name="email" id="email" placeholder="e.g. you@example.com" required />
+                    </div>
+
+                    <div class="form-row">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" name="phone" id="phone" placeholder="e.g. +251 911223344" required />
+                    </div>
+
+                    <div class="form-row">
+                        <label for="message">Your Message</label>
+                        <textarea name="message" id="message" rows="6" placeholder="We’d love to hear from you..."
+                            required></textarea>
+                    </div>
+
+                    <button class="btn" type="submit">Send Message</button>
+                </fieldset>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <p><strong>Address:</strong><br />Bole Atlas, Addis Ababa, Ethiopia</p>
+                <p>Phone number: +251-9 84 79 05 89</p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="#" title="Tiktok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <p class="footer-copy">&copy; 2025 SweetBee Honey Shop. All rights reserved.</p>
+    </footer>
+    <script src="sweetbee.js"></script>
+</body>
+
+</html>

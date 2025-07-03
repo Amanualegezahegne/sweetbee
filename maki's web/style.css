@@ -1,0 +1,396 @@
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fffbee;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header Styling */
+header {
+    background-color: #ffc107;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 60px;
+    height: auto;
+    margin-right: 10px;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    color: #3a2c00;
+}
+
+/* Navigation Bar */
+nav {
+    display: flex;
+    gap: 15px;
+}
+
+nav a {
+    color: #3a2c00;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #ffe082;
+}
+
+/* Toggle Button for Mobile Nav */
+.nav-toggle {
+    display: none;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #4e342e;
+}
+
+/* Hero Section */
+.hero {
+    background: url('images/bee 2.jpg') no-repeat center / cover;
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    background-attachment: fixed;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    padding: 0 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+
+
+/* Products Section */
+.products {
+    padding: 2rem;
+    text-align: center;
+}
+
+.product-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.product {
+    background-color: #fff3cd;
+    padding: 1rem;
+    border-radius: 10px;
+    width: calc(33.33% - 2rem);
+    /* 3 in a row with gap */
+    min-width: 250px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.8s ease forwards;
+    transition: transform 0.3s;
+}
+
+
+.product img {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.product img:hover {
+    transform: scale(1.3);
+}
+
+.products p a:hover {
+    color: red;
+}
+
+.product h3 {
+    margin: 0.5rem 0;
+}
+
+/* Stagger animation delay for each product */
+.product:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.product:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.product:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+.product:nth-child(4) {
+    animation-delay: 0.7s;
+}
+
+.product:nth-child(5) {
+    animation-delay: 0.9s;
+}
+
+.product:nth-child(6) {
+    animation-delay: 1.1s;
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Contact Section */
+.contact-section {
+    padding: 2em;
+    background-color: #fff;
+    height: 660px;
+}
+
+.contact-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-form fieldset {
+    border: none;
+    padding: 0;
+}
+
+.form-row {
+    margin-bottom: 1em;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn {
+    background-color: #f4a261;
+    color: white;
+    padding: 0.75em 1.5em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: black;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 2em 1em;
+    margin-top: 2rem;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.footer-column {
+    width: 30%;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.footer-column h3 {
+    border-bottom: 1px solid #555;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    color: orange;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 0.5em;
+}
+
+.footer-column ul li a {
+    color: #ccc;
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: orange;
+    text-decoration: underline;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.social-icons a {
+    color: #fff;
+    font-size: 1.2em;
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: orange;
+}
+
+.footer-copy {
+    text-align: center;
+    margin-top: 2em;
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+/* Sections */
+section {
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: auto;
+    background-color: #fff8e1;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+section h2 {
+    font-size: 1.5rem;
+    color: #c28f00;
+    margin-bottom: 15px;
+}
+
+/* Founder Image */
+.founder-img {
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+    margin: 10px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.founder p {
+    display: block;
+}
+
+/* Timeline List */
+.timeline ul {
+    list-style: square inside;
+    padding-left: 20px;
+}
+
+.timeline li {
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+        background-color: #ffe082;
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    nav.show {
+        display: flex;
+    }
+
+    nav a {
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .nav-toggle {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .hero h2 {
+        font-size: 2rem;
+    }
+
+    .product-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-column {
+        width: 100%;
+        text-align: center;
+    }
+}
