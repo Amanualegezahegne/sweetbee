@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard</title>
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="admin-full.css" />
+</head>
+
+<body>
+
+
+    <div>
+
+        <!-- 🔶 Header with Logo and Title -->
+        <div class="header-container">
+            <div class="logo-title">
+                <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
+                <h1>SweetBee Honey</h1>
+            </div>
+        </div>
+
+        <nav>
+            <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
+            <a href="admin home.html">Home</a>
+            <a href="admin-message.html">Messages</a>
+            <a href="manage-product.html">Manage Products</a>
+            <a href="edit-profile.html">Edit profile</a>
+            <a href="admin.html" onclick="logout()">Logout</a>
+        </nav>
+
+
+
+        <!-- 🍯 Product Management Section -->
+        <section>
+            <h2>🍯 Manage Products</h2>
+            <form id="productForm" enctype="multipart/form-data">
+                <input type="text" id="productName" placeholder="Product Name" required />
+                <input type="text" id="productPrice" placeholder="Product Price (ETB)" required />
+                <textarea id="productDesc" placeholder="Product Description" required rows="4"></textarea>
+                <input type="file" id="productImage" accept="image/*" required />
+                <button type="submit">Add Product</button>
+            </form>
+
+            <div id="productList">
+                <ul id="productItems" style="list-style: none; padding: 0;">
+                    <!-- Product items will be dynamically inserted here by JS -->
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script src="admin-dashboard.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Home page</title>
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="admin-full.css" />
+</head>
+
+<body>
+
+    <div>
+        <!-- 🔶 Header with Logo and Title -->
+        <div class="header-container">
+
+            <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
+            <h1>SweetBee Honey</h1>
+        </div>
+
+        <nav>
+            <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
+
+            <a href="admin home.html">Home</a>
+            <a href="admin-message.html">Messages</a>
+            <a href="manage-product.html">Manage Products</a>
+            <a href="edit-profile.html">Edit profile</a>
+            <a href="admin.html" id="logout-link">Logout</a>
+        </nav>
+
+        <main>
+            <div class="card">
+                <h3>View Messages</h3>
+                <p>Check customer inquiries and feedback.</p>
+                <button onclick="location.href='admin-message.html'">Go</button>
+            </div>
+            <div class="card">
+                <h3>Manage Products</h3>
+                <p>Add, update, or remove store products.</p>
+                <button onclick="location.href='manage-product.html'">Go</button>
+            </div>
+            <div class="card">
+                <h3>Reset Password</h3>
+                <p>Change your admin password securely.</p>
+                <button onclick="location.href='edit-profile.html'">Go</button>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2025 SweetBee Honey. All rights reserved.</p>
+                <p class="footer-tagline">Crafted with care for our admins.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Link external JS -->
+    <script src="admin-dashboard.js"></script>
+</body>
+
+</html>

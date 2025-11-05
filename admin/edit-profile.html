@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="admin-full.css" />
+</head>
+<div>
+    <!-- 🔶 Header with Logo and Title -->
+    <div class="header-container">
+        <div class="logo-title">
+            <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
+            <h1>SweetBee Honey</h1>
+        </div>
+    </div>
+    <nav>
+        <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
+        <a href="admin home.html">Home</a>
+        <a href="admin-message.html">Messages</a>
+        <a href="manage-product.html">Manage Products</a>
+        <a href="edit-profile.html">Edit profile</a>
+        <a href="admin.html" onclick="logout()">Logout</a>
+    </nav>
+
+
+
+
+    <div class="ep-container">
+        <h2 class="ep-title">Edit Profile</h2>
+        <form id="ep-form">
+
+            <!-- Username -->
+            <div class="ep-field">
+                <label for="ep-username">Username</label>
+                <input type="text" id="ep-username" name="username" />
+                <span class="ep-error" id="ep-username-error"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="ep-field">
+                <label for="ep-email">Email</label>
+                <input type="email" id="ep-email" name="email" />
+                <span class="ep-error" id="ep-email-error"></span>
+            </div>
+
+            <!-- Current Password -->
+            <div class="ep-field">
+                <label for="ep-current-password">Current Password</label>
+                <input type="password" id="ep-current-password" name="currentPassword" />
+                <span class="ep-error" id="ep-current-password-error"></span>
+            </div>
+
+            <!-- New Password -->
+            <div class="ep-field">
+                <label for="ep-new-password">New Password</label>
+                <input type="password" id="ep-new-password" name="newPassword" />
+                <span class="ep-error" id="ep-new-password-error"></span>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="ep-field">
+                <label for="ep-confirm-password">Confirm New Password</label>
+                <input type="password" id="ep-confirm-password" name="confirmPassword" />
+                <span class="ep-error" id="ep-confirm-password-error"></span>
+            </div>
+
+            <button type="submit" class="ep-btn" id="ep-submit">💾 Save Changes</button>
+        </form>
+    </div>
+
+
+
+    <script src="admin-dashboard.js"></script>
+    </body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard</title>
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="admin-full.css" />
+</head>
+
+<body>
+
+    <div>
+
+        <!-- 🔶 Header with Logo and Title -->
+        <div class="header-container">
+            <div class="logo-title">
+                <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
+                <h1>SweetBee Honey</h1>
+            </div>
+        </div>
+
+        <nav>
+            <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
+            <a href="admin home.html">Home</a>
+            <a href="admin-message.html">Messages</a>
+            <a href="manage-product.html">Manage Products</a>
+            <a href="edit-profile.html">Edit profile</a>
+            <a href="admin.html" onclick="logout()">Logout</a>
+        </nav>
+
+        <h1> 📩 Contact Messages</h1>
+
+        <!-- 📩 Contact Messages Section -->
+        <section>
+            <h2>🔐 Here are messages from your website visitors</h2>
+            <div class="table-responsive">
+                <div id="messageList">
+                    <table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Message</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messageTableBody">
+                            <!-- Messages will be dynamically inserted here by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 SweetBee Honey. All rights reserved.</p>
+            <p class="footer-tagline">Your satisfaction is our honey's pride.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script src="admin-dashboard.js"></script>
+</body>
+
+</html>
