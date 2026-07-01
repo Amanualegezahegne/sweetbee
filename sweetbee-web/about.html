@@ -4,16 +4,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SweetBee Honey Shop</title>
+    <title>About Us – SweetBee Honey Shop</title>
     <link rel="stylesheet" href="style.css" />
     <!-- Font Awesome CSS CDN for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
 </head>
 
 <body>
 
-    <!-- Header -->
+    <!-- ===== HEADER (unchanged) ===== -->
     <header>
         <div class="header-container">
             <div class="logo-title">
@@ -26,57 +25,211 @@
                 <a href="products.html">Products</a>
                 <a href="about.html">About</a>
                 <a href="contact.html">Contact</a>
-
             </nav>
         </div>
     </header>
 
-    <section class="intro">
-        <h1 align="center">About us</h1>
-        <h2>Our Story</h2>
-        <p>Sweet Bee Honey began as a small family operation with a simple mission: to share the pure, unfiltered
-            sweetness of nature with our community. What started with just a few hives has grown into a trusted source
-            of premium honey products.</p>
+    <!-- ===== 1. PAGE HERO ===== -->
+    <section class="about-hero" aria-label="About page hero">
+        <div class="about-hero-overlay"></div>
+        <div class="about-hero-content">
+            <span class="about-hero-badge"><i class="fas fa-honeycomb" aria-hidden="true"></i> Since 2021</span>
+            <h2 class="about-hero-title">About Us</h2>
+            <p class="about-hero-subtitle">Meet the people behind the hive</p>
+        </div>
     </section>
 
-    <section class="mission">
-        <h2>Mission & Vision</h2>
-        <p>We're dedicated to delivering natural, healthy honey while preserving the environment. We envision a world
-            where sustainable beekeeping supports both bees and people.</p>
+    <!-- ===== 2. OUR STORY ===== -->
+    <section class="about-story about-animate" aria-labelledby="story-heading">
+        <div class="about-container">
+            <div class="story-text">
+                <span class="about-label">Our Story</span>
+                <h2 id="story-heading" class="about-section-heading">From a Few Hives to a Trusted Name</h2>
+                <p>Sweet Bee Honey began as a small family operation with a simple mission: to share the pure,
+                    unfiltered sweetness of nature with our community. What started with just a few hives in the
+                    highlands of Tigray has grown into a trusted source of premium honey products loved across
+                    Ethiopia.</p>
+                <p>Every jar we produce carries the same care and passion we had on day one — no shortcuts,
+                    no over-processing, just honest honey straight from the hive to your table.</p>
+                <a href="products.html" class="btn btn-primary about-story-btn">
+                    <i class="fas fa-jar" aria-hidden="true"></i> Explore Our Products
+                </a>
+            </div>
+            <div class="story-visual" aria-hidden="true">
+                <div class="honeycomb-grid">
+                    <div class="hex hex-1"><img src="images/bee1.jpg" alt="Beekeeper at work" /></div>
+                    <div class="hex hex-2"><i class="fas fa-bee"></i></div>
+                    <div class="hex hex-3"><img src="images/bee 2.jpg" alt="Golden honey" /></div>
+                    <div class="hex hex-4"><i class="fas fa-jar"></i></div>
+                    <div class="hex hex-5"><i class="fas fa-leaf"></i></div>
+                    <div class="hex hex-6"><img src="images/bee1.jpg" alt="Natural beehive" /></div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="founder">
-        <h2>Meet the Founder</h2>
-        <img src="/images/IMG_1889.jpg" alt="Founder" class="founder-img">
-        <p><strong>Mahlet Berihun</strong> founded SweetBee Honey out of love for bees and a desire to provide natural
-            products to her community.</p>
+    <!-- ===== 3. MISSION & VISION ===== -->
+    <section class="about-mission-vision" aria-labelledby="mission-vision-heading">
+        <div class="about-container">
+            <span class="about-label" style="display:block;text-align:center;">What We Stand For</span>
+            <h2 id="mission-vision-heading" class="about-section-heading" style="text-align:center;">Mission &amp; Vision</h2>
+            <div class="mv-cards">
+                <!-- Mission -->
+                <article class="mv-card about-animate" aria-label="Our Mission">
+                    <div class="mv-icon-wrap">
+                        <i class="fas fa-bullseye" aria-hidden="true"></i>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>We're dedicated to delivering natural, healthy honey while preserving the environment.
+                        We believe every spoonful should be as pure as nature intended — raw, unfiltered,
+                        and full of life.</p>
+                </article>
+                <!-- Vision -->
+                <article class="mv-card about-animate" aria-label="Our Vision">
+                    <div class="mv-icon-wrap">
+                        <i class="fas fa-eye" aria-hidden="true"></i>
+                    </div>
+                    <h3>Our Vision</h3>
+                    <p>We envision a world where sustainable beekeeping supports both bees and people —
+                        where every community has access to pure, traceable honey from healthy, thriving
+                        hives.</p>
+                </article>
+            </div>
+        </div>
     </section>
 
-    <section class="timeline">
-        <h2>Our Journey</h2>
-        <ul>
-            <li><strong>2021:</strong> Started with 3 hives in Mekele,Tigray</li>
-            <li><strong>2022:</strong> Expanded to 50 hives</li>
-            <li><strong>2023:</strong> Opened our first online shop</li>
-            <li><strong>2024:</strong> Partnered with local farmers to grow sustainably</li>
-        </ul>
+    <!-- ===== 4. MEET THE FOUNDER ===== -->
+    <section class="about-founder about-animate" aria-labelledby="founder-heading">
+        <div class="about-container">
+            <span class="about-label" style="display:block;text-align:center;">The Person Behind It All</span>
+            <h2 id="founder-heading" class="about-section-heading" style="text-align:center;">Meet the Founder</h2>
+            <div class="founder-card">
+                <div class="founder-photo-wrap">
+                    <img src="images/IMG_1889.jpg" alt="Mahlet Berihun, Founder &amp; CEO of SweetBee Honey"
+                         class="founder-img-circle" />
+                    <div class="founder-photo-ring" aria-hidden="true"></div>
+                </div>
+                <h3 class="founder-name">Mahlet Berihun</h3>
+                <p class="founder-role">Founder &amp; CEO</p>
+                <p class="founder-bio">Mahlet founded SweetBee Honey out of a deep love for bees and a desire to
+                    provide truly natural products to her community. Raised in Tigray, she grew up watching her
+                    family tend to hives and quickly learned that good honey starts with happy bees and healthy
+                    land.</p>
+                <div class="founder-social" aria-label="Mahlet's social links">
+                    <a href="https://www.instagram.com/sweetbeehoney.et" target="_blank" rel="noopener"
+                       title="Instagram" aria-label="SweetBee Instagram">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://t.me/Mak_B07" target="_blank" rel="noopener"
+                       title="Telegram" aria-label="Mahlet's Telegram">
+                        <i class="fab fa-telegram" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@sweetbeehoneyet" target="_blank" rel="noopener"
+                       title="TikTok" aria-label="SweetBee TikTok">
+                        <i class="fab fa-tiktok" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="sustainability">
-        <h2>Our Commitment to Sustainability</h2>
-        <p>We never over-filter or heat our honey. We preserve enzymes, pollen, and nutrients. Our practices support
-            pollinator health, local ecosystems, and the global bee population.</p>
+    <!-- ===== 5. OUR JOURNEY / TIMELINE ===== -->
+    <section class="about-timeline" aria-labelledby="timeline-heading">
+        <div class="about-container">
+            <span class="about-label" style="display:block;text-align:center;">How We Grew</span>
+            <h2 id="timeline-heading" class="about-section-heading" style="text-align:center;">Our Journey</h2>
+            <div class="timeline-track" role="list">
+
+                <div class="timeline-item timeline-left about-animate" role="listitem">
+                    <div class="timeline-card">
+                        <span class="timeline-year">2021</span>
+                        <h3 class="timeline-event">Humble Beginnings</h3>
+                        <p>Started with 3 hives in Mekele, Tigray. The first jars of golden honey were gifted
+                           to neighbours and quickly became the talk of the neighbourhood.</p>
+                    </div>
+                    <div class="timeline-dot" aria-hidden="true"></div>
+                </div>
+
+                <div class="timeline-item timeline-right about-animate" role="listitem">
+                    <div class="timeline-card">
+                        <span class="timeline-year">2022</span>
+                        <h3 class="timeline-event">Rapid Expansion</h3>
+                        <p>Expanded to 50 hives and started supplying local markets. Community demand
+                           confirmed that natural honey could not be replaced.</p>
+                    </div>
+                    <div class="timeline-dot" aria-hidden="true"></div>
+                </div>
+
+                <div class="timeline-item timeline-left about-animate" role="listitem">
+                    <div class="timeline-card">
+                        <span class="timeline-year">2023</span>
+                        <h3 class="timeline-event">Going Digital</h3>
+                        <p>Opened our first online shop, reaching customers across Ethiopia and enabling
+                           direct-to-door delivery of fresh honey products.</p>
+                    </div>
+                    <div class="timeline-dot" aria-hidden="true"></div>
+                </div>
+
+                <div class="timeline-item timeline-right about-animate" role="listitem">
+                    <div class="timeline-card">
+                        <span class="timeline-year">2024</span>
+                        <h3 class="timeline-event">Community Roots</h3>
+                        <p>Partnered with local farmers to grow sustainably, supporting smallholder
+                           beekeepers and creating shared prosperity across the region.</p>
+                    </div>
+                    <div class="timeline-dot" aria-hidden="true"></div>
+                </div>
+
+            </div>
+        </div>
     </section>
 
+    <!-- ===== 6. SUSTAINABILITY ===== -->
+    <section class="about-sustainability" aria-labelledby="sustain-heading">
+        <div class="about-container">
+            <span class="about-label" style="display:block;text-align:center;">Our Commitment</span>
+            <h2 id="sustain-heading" class="about-section-heading" style="text-align:center;">Built for the Planet</h2>
+            <p class="about-section-subtext">
+                We never over-filter or heat our honey. We preserve enzymes, pollen, and nutrients. Our practices
+                support pollinator health, local ecosystems, and the global bee population.
+            </p>
+            <div class="sustain-grid">
+                <article class="sustain-card about-animate">
+                    <div class="sustain-icon-wrap">
+                        <i class="fas fa-leaf" aria-hidden="true"></i>
+                    </div>
+                    <h3>100% Organic</h3>
+                    <p>No pesticides, no additives. Every hive is maintained using certified organic practices
+                       that protect the bees and the land they work.</p>
+                </article>
+                <article class="sustain-card about-animate">
+                    <div class="sustain-icon-wrap">
+                        <i class="fas fa-recycle" aria-hidden="true"></i>
+                    </div>
+                    <h3>Sustainable Packaging</h3>
+                    <p>Our jars and packaging are recyclable or reusable, minimising waste from hive to
+                       your home. Small choices, big impact.</p>
+                </article>
+                <article class="sustain-card about-animate">
+                    <div class="sustain-icon-wrap">
+                        <i class="fas fa-heart" aria-hidden="true"></i>
+                    </div>
+                    <h3>Community First</h3>
+                    <p>We reinvest in local beekeeping communities, offer training to new farmers, and share
+                       profits with the people who make every jar possible.</p>
+                </article>
+            </div>
+        </div>
+    </section>
 
+    <!-- ===== FOOTER (unchanged) ===== -->
     <footer>
         <div class="footer-container">
             <div class="footer-column">
                 <h3>Contact Info</h3>
                 <p><strong>Address:</strong><br />Bole Atlas, Addis Ababa, Ethiopia</p>
-                <p>Phone number:+251-9 84 79 05 89</p>
+                <p>Phone number: +251-9 84 79 05 89</p>
             </div>
-
             <div class="footer-column">
                 <h3>Quick Links</h3>
                 <ul>
@@ -86,25 +239,82 @@
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
-
             <div class="footer-column">
                 <h3>Follow Us</h3>
                 <div class="social-icons">
-                    <a href="#" title="Facebook" target="_blank"><i class=" fab fa-facebook-f"></i></a>
-                    <a href="https://twitter.com/sweetbeehoneyet" title="Twitter" target="_blank"><i
-                            class=" fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/sweetbeehoney.et" target="_blank" title="Instagram"><i
-                            class=" fab fa-instagram"></i></a>
-                    <a href="https://t.me/Mak_B07" title="Telegram" target="_blank"><i class="fab fa-telegram"></i></a>
-                    <a href="https://www.tiktok.com/@sweetbeehoneyet" title="Tiktok" target="_blank"><i
-                            class=" fab fa-tiktok"></i></a>
+                    <a href="#" title="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com/sweetbeehoneyet" title="Twitter" target="_blank">
+                        <i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/sweetbeehoney.et" target="_blank" title="Instagram">
+                        <i class="fab fa-instagram"></i></a>
+                    <a href="https://t.me/Mak_B07" title="Telegram" target="_blank">
+                        <i class="fab fa-telegram"></i></a>
+                    <a href="https://www.tiktok.com/@sweetbeehoneyet" title="Tiktok" target="_blank">
+                        <i class="fab fa-tiktok"></i></a>
                 </div>
             </div>
-
         </div>
         <p class="footer-copy">&copy; 2025 SweetBee Honey Shop. All rights reserved.</p>
     </footer>
-    <script src="sweetbee.js"></script>
-</body>
 
+    <script src="sweetbee.js"></script>
+
+    <!-- ===== ABOUT PAGE SCROLL ANIMATIONS ===== -->
+    <script>
+    (function () {
+        // Respect reduced-motion preference
+        var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function initAboutAnimations() {
+            var elements = document.querySelectorAll('.about-animate');
+
+            if (prefersReduced || !('IntersectionObserver' in window)) {
+                // Show everything immediately
+                elements.forEach(function (el) {
+                    el.classList.add('animate-in');
+                });
+                return;
+            }
+
+            var observer = new IntersectionObserver(function (entries, obs) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+            // Stagger timeline items with a small delay so siblings animate in sequence
+            var timelineItems = document.querySelectorAll('.timeline-item.about-animate');
+            timelineItems.forEach(function (item, i) {
+                item.style.transitionDelay = (i * 0.12) + 's';
+            });
+
+            // Stagger sustainability cards
+            var sustainCards = document.querySelectorAll('.sustain-card.about-animate');
+            sustainCards.forEach(function (card, i) {
+                card.style.transitionDelay = (i * 0.1) + 's';
+            });
+
+            // Stagger mission/vision cards
+            var mvCards = document.querySelectorAll('.mv-card.about-animate');
+            mvCards.forEach(function (card, i) {
+                card.style.transitionDelay = (i * 0.12) + 's';
+            });
+
+            elements.forEach(function (el) {
+                observer.observe(el);
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAboutAnimations);
+        } else {
+            initAboutAnimations();
+        }
+    })();
+    </script>
+
+</body>
 </html>

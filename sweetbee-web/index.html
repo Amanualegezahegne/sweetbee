@@ -5,9 +5,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SweetBee Honey Shop</title>
+    <!-- Preload hero background image for performance (Req 21.5) -->
+    <link rel="preload" as="image" href="images/bee 2.jpg" />
     <link rel="stylesheet" href="style.css" />
-    <!-- Font Awesome CSS CDN for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Font Awesome CSS CDN with SRI (Req 25.2) -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
 </head>
 
 <body>
@@ -18,12 +26,10 @@
             <div class="logo-title">
                 <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
                 <h1>SweetBee Honey</h1>
-
-
             </div>
 
             <!-- Nav Toggle Button for Mobile -->
-            <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+            <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
 
             <!-- Navigation Bar -->
             <nav id="navbar">
@@ -35,44 +41,242 @@
         </div>
     </header>
 
-
-    <section class="hero">
-        <h2>Pure & Natural Honey</h2>
-
+    <!-- Enhanced Hero Section (Tasks 4.1, 4.2, 4.3) -->
+    <section class="hero-enhanced" id="hero-section" aria-label="Hero section">
+        <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="hero-content">
+            <div class="hero-badge">100% Natural</div>
+            <h1 class="hero-title">Pure &amp; Natural Honey</h1>
+            <p class="hero-subtitle">From Ethiopian highlands to your table</p>
+            <div class="hero-cta-group">
+                <a href="products.html" class="btn btn-primary">Explore Products</a>
+                <a href="about.html" class="btn btn-secondary">Our Story</a>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator" aria-label="Scroll down">
+            <span>Scroll to discover</span>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </div>
     </section>
 
-    <!-- Products -->
-    <section class="products">
-        <h2>Our Products</h2>
-        <br>
-        <div class="product-list">
-            <div class="product">
-                <img src="images/pic3.jpg" alt="Wild Honey" />
-                <br><br>
-                <h3>Wild Honey</h3>
+    <!-- Video Story Section (Tasks 5.1–5.4) -->
+    <section class="video-story-section" id="video-section" aria-label="Video story section">
+        <div class="container">
+            <h2 class="section-title">Our Story in Motion</h2>
+            <p class="section-subtitle">Watch how we harvest nature's finest honey from Ethiopian highlands</p>
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <video id="honey-video" class="video-player" poster="images/video-poster.jpg" preload="metadata" controls aria-label="Honey production video">
+                        <source src="videos/bee-honey-production.mp4" type="video/mp4">
+                        <source src="videos/bee-honey-production.webm" type="video/webm">
+                        Your browser does not support the video tag.
+                    </video>
+                    <button class="video-play-btn" aria-label="Play video">
+                        <i class="fas fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="video-error-overlay" style="display:none;" role="alert">
+                        <p class="video-error-msg">Unable to load video</p>
+                        <button class="video-retry-btn">Retry</button>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <div class="video-feature">
+                        <i class="fas fa-video" aria-hidden="true"></i>
+                        <span>Watch our bees at work</span>
+                    </div>
+                    <div class="video-feature">
+                        <i class="fas fa-hand-holding-heart" aria-hidden="true"></i>
+                        <span>See our harvesting process</span>
+                    </div>
+                    <div class="video-feature">
+                        <i class="fas fa-industry" aria-hidden="true"></i>
+                        <span>Quality control &amp; packaging</span>
+                    </div>
+                </div>
             </div>
-            <div class="product">
-                <img src="images/pic5.jpg" alt="Organic Honey" />
-                <br><br>
-                <h3>Organic Honey</h3>
-            </div>
-            <div class="product">
-                <img src="images/pic4.jpg" alt="Honeycomb Jar" />
-                <br><br>
-                <h3>Honeycomb Jar</h3>
-            </div>
-            <div class="formore">
-                <p>For more information <a href="products.html">click Here</a></p>
-            </div>
+        </div>
     </section>
 
+    <!-- Features Section (Tasks 7.1–7.3) -->
+    <section class="features-section" id="features-section" aria-label="Why choose SweetBee">
+        <div class="container">
+            <h2 class="section-title">Why Choose SweetBee</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-leaf" aria-hidden="true"></i></div>
+                    <h3>100% Organic</h3>
+                    <p>Pure honey from natural Ethiopian beehives</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-heart" aria-hidden="true"></i></div>
+                    <h3>Health Benefits</h3>
+                    <p>Rich in antioxidants and natural enzymes</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-certificate" aria-hidden="true"></i></div>
+                    <h3>Quality Assured</h3>
+                    <p>Tested and certified for purity</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-shipping-fast" aria-hidden="true"></i></div>
+                    <h3>Fast Delivery</h3>
+                    <p>Fresh honey delivered to your doorstep</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Product Showcase (Tasks 8.1–8.4) -->
+    <section class="products-enhanced" id="products-section" aria-label="Product showcase">
+        <div class="container">
+            <h2 class="section-title">Our Premium Collection</h2>
+            <p class="section-subtitle">Discover the finest honey varieties from Ethiopian highlands</p>
+            <div class="product-grid" id="enhanced-product-grid">
+                <div class="product-card-enhanced">
+                    <div class="product-badge">Bestseller</div>
+                    <div class="product-image-wrapper">
+                        <img src="images/pic3.jpg" alt="Wild Honey" class="product-image" loading="lazy" />
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-name">Wild Honey</h3>
+                        <p class="product-description">Harvested from wild Ethiopian forests, pure and raw</p>
+                        <div class="product-footer">
+                            <span class="product-price">450 ETB</span>
+                            <a href="products.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card-enhanced">
+                    <div class="product-image-wrapper">
+                        <img src="images/pic5.jpg" alt="Organic Honey" class="product-image" loading="lazy" />
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-name">Organic Honey</h3>
+                        <p class="product-description">Certified organic honey from highland beehives</p>
+                        <div class="product-footer">
+                            <span class="product-price">380 ETB</span>
+                            <a href="products.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card-enhanced">
+                    <div class="product-image-wrapper">
+                        <img src="images/pic4.jpg" alt="Honeycomb Jar" class="product-image" loading="lazy" />
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-name">Honeycomb Jar</h3>
+                        <p class="product-description">Natural honeycomb preserved in pure raw honey</p>
+                        <div class="product-footer">
+                            <span class="product-price">520 ETB</span>
+                            <a href="products.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="products-cta">
+                <a href="products.html" class="btn btn-primary-large">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section (Tasks 10.1–10.5) -->
+    <section class="testimonials-section" id="testimonials-section" aria-label="Customer testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="testimonials-carousel" aria-live="polite" role="region" aria-label="Testimonials carousel">
+                <div class="testimonial-track">
+                    <div class="testimonial-card active" role="group" aria-label="Testimonial 1 of 3">
+                        <div class="testimonial-rating" aria-label="5 out of 5 stars">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        </div>
+                        <p class="testimonial-text">"The best honey I've ever tasted! Pure and natural from the Ethiopian highlands."</p>
+                        <div class="testimonial-author">
+                            <img src="images/avatar1.jpg" alt="Ayalew Tesfa" class="author-avatar" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'30\' fill=\'%23ffc107\'/%3E%3Ctext x=\'30\' y=\'38\' text-anchor=\'middle\' font-size=\'28\' fill=\'white\'%3EA%3C/text%3E%3C/svg%3E'">
+                            <div class="author-info">
+                                <h4>Ayalew Tesfa</h4>
+                                <span>Addis Ababa</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card" role="group" aria-label="Testimonial 2 of 3">
+                        <div class="testimonial-rating" aria-label="5 out of 5 stars">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        </div>
+                        <p class="testimonial-text">"Incredible quality and fast delivery. SweetBee Honey is now my go-to for all natural honey."</p>
+                        <div class="testimonial-author">
+                            <img src="images/avatar2.jpg" alt="Selam Haile" class="author-avatar" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'30\' fill=\'%23ffc107\'/%3E%3Ctext x=\'30\' y=\'38\' text-anchor=\'middle\' font-size=\'28\' fill=\'white\'%3ES%3C/text%3E%3C/svg%3E'">
+                            <div class="author-info">
+                                <h4>Selam Haile</h4>
+                                <span>Hawassa</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card" role="group" aria-label="Testimonial 3 of 3">
+                        <div class="testimonial-rating" aria-label="5 out of 5 stars">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        </div>
+                        <p class="testimonial-text">"Rich in flavor and health benefits. I recommend SweetBee Honey to everyone who values natural products."</p>
+                        <div class="testimonial-author">
+                            <img src="images/avatar3.jpg" alt="Dawit Bekele" class="author-avatar" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'30\' fill=\'%23ffc107\'/%3E%3Ctext x=\'30\' y=\'38\' text-anchor=\'middle\' font-size=\'28\' fill=\'white\'%3ED%3C/text%3E%3C/svg%3E'">
+                            <div class="author-info">
+                                <h4>Dawit Bekele</h4>
+                                <span>Bahir Dar</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev" aria-label="Previous testimonial">
+                        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <div class="carousel-indicators" role="tablist" aria-label="Testimonial indicators">
+                        <span class="indicator active" role="tab" aria-selected="true" aria-label="Testimonial 1" tabindex="0"></span>
+                        <span class="indicator" role="tab" aria-selected="false" aria-label="Testimonial 2" tabindex="0"></span>
+                        <span class="indicator" role="tab" aria-selected="false" aria-label="Testimonial 3" tabindex="0"></span>
+                    </div>
+                    <button class="carousel-btn next" aria-label="Next testimonial">
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section (Tasks 11.1–11.3) -->
+    <section class="cta-section" id="cta-section" aria-label="Call to action">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Experience Nature's Sweetness</h2>
+                <p>Order now and taste the difference of 100% natural Ethiopian honey</p>
+                <div class="cta-buttons">
+                    <a href="products.html" class="btn btn-cta-primary">Shop Now</a>
+                    <a href="contact.html" class="btn btn-cta-secondary">Contact Us</a>
+                </div>
+            </div>
+            <div class="cta-visual">
+                <img src="images/pic3.jpg" alt="SweetBee Honey Jar" class="cta-image" loading="lazy" />
+            </div>
+        </div>
+    </section>
 
     <footer>
         <div class="footer-container">
             <div class="footer-column">
                 <h3>Contact Info</h3>
                 <p><strong>Address:</strong><br />Bole Atlas, Addis Ababa, Ethiopia</p>
-                <p>Phone number:+251-9 84 79 05 89</p>
+                <p>Phone number: +251-9 84 79 05 89</p>
             </div>
 
             <div class="footer-column">
@@ -88,25 +292,16 @@
             <div class="footer-column">
                 <h3>Follow Us</h3>
                 <div class="social-icons">
-                    <a href="#" title="Facebook" target="_blank"><i class=" fab fa-facebook-f"></i></a>
-                    <a href="https://twitter.com/sweetbeehoneyet" title="Twitter" target="_blank"><i
-                            class=" fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/sweetbeehoney.et" target="_blank" title="Instagram"><i
-                            class=" fab fa-instagram"></i></a>
-                    <a href="https://t.me/Mak_B07" title="Telegram" target="_blank"><i class="fab fa-telegram"></i></a>
-                    <a href="https://www.tiktok.com/@sweetbeehoneyet" title="Tiktok" target="_blank"><i
-                            class=" fab fa-tiktok"></i></a>
+                    <a href="#" title="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
+                    <a href="https://twitter.com/sweetbeehoneyet" title="Twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Twitter</span></a>
+                    <a href="https://www.instagram.com/sweetbeehoney.et" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i><span class="sr-only">Instagram</span></a>
+                    <a href="https://t.me/Mak_B07" title="Telegram" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram" aria-hidden="true"></i><span class="sr-only">Telegram</span></a>
+                    <a href="https://www.tiktok.com/@sweetbeehoneyet" title="Tiktok" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i><span class="sr-only">TikTok</span></a>
                 </div>
             </div>
         </div>
         <p class="footer-copy">&copy; 2025 SweetBee Honey Shop. All rights reserved.</p>
     </footer>
-
-
-
-
-
-
 
     <script src="sweetbee.js"></script>
 </body>

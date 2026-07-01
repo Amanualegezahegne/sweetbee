@@ -26,11 +26,71 @@
         </div>
     </header>
 
-    <section class="products">
-        <h2>Our Products</h2>
-        <h3>Here are some information regarding their price and weight</h3><br>
-        <div class="product-list" id="productList">
-            <!-- Products will be loaded here dynamically -->
+    <!-- ===== PRODUCTS PAGE HERO ===== -->
+    <section class="products-hero" aria-label="Products hero">
+        <div class="products-hero-content">
+            <span class="products-hero-eyebrow"><i class="fas fa-jar" aria-hidden="true"></i> 100% Pure &amp; Natural</span>
+            <h2 class="products-hero-title">Our Premium Collection</h2>
+            <p class="products-hero-subtitle">Fresh from Ethiopian highlands to your table</p>
+        </div>
+        <!-- Curved bottom divider -->
+        <div class="products-hero-divider" aria-hidden="true">
+            <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,80 C360,0 1080,0 1440,80 L1440,80 L0,80 Z" fill="var(--bg-primary)"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ===== FILTER / SORT BAR ===== -->
+    <div class="products-filter-bar" id="filterBar" role="search" aria-label="Filter and sort products">
+        <div class="products-filter-inner">
+            <!-- Category pills -->
+            <div class="filter-pills" role="group" aria-label="Filter categories">
+                <button class="filter-pill active" data-filter="all" aria-pressed="true">All Products</button>
+            </div>
+            <!-- Search -->
+            <div class="filter-search-wrapper">
+                <i class="fas fa-search filter-search-icon" aria-hidden="true"></i>
+                <input
+                    type="search"
+                    id="productSearch"
+                    class="filter-search"
+                    placeholder="Search products…"
+                    aria-label="Search products"
+                    autocomplete="off"
+                />
+            </div>
+            <!-- Sort -->
+            <div class="filter-sort-wrapper">
+                <label for="productSort" class="sr-only">Sort products</label>
+                <select id="productSort" class="filter-sort" aria-label="Sort products">
+                    <option value="default">Sort by</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="newest">Newest</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PRODUCT GRID ===== -->
+    <section class="products-page-section" aria-label="Product listing">
+        <div class="products-page-container">
+            <!-- Results count -->
+            <p class="products-results-count" id="resultsCount" aria-live="polite" aria-atomic="true"></p>
+            <!-- Dynamic product cards injected here -->
+            <div class="products-page-grid" id="productList" role="list"></div>
+        </div>
+    </section>
+
+    <!-- ===== BOTTOM CTA STRIP ===== -->
+    <section class="products-cta-strip" aria-label="Contact us">
+        <div class="products-cta-inner">
+            <div class="products-cta-text">
+                <i class="fas fa-comment-dots products-cta-icon" aria-hidden="true"></i>
+                <span>Can't find what you're looking for?</span>
+            </div>
+            <a href="contact.html" class="btn products-cta-btn">Contact Us</a>
         </div>
     </section>
 
