@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation Engine Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #ffc107;
+        }
+        
+        .test-section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .test-box {
+            width: 200px;
+            height: 100px;
+            background: #ffc107;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .test-boxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        button {
+            background: #ffc107;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #ffb300;
+        }
+        
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        
+        .success {
+            color: green;
+        }
+        
+        .info {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Animation Engine Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: FadeIn Animation</h2>
+        <button onclick="testFadeIn()">Run FadeIn Test</button>
+        <div id="fadeInBox" class="test-box" style="opacity: 0;">FadeIn Test</div>
+        <div id="fadeInStatus" class="status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: SlideUp Animation</h2>
+        <button onclick="testSlideUp()">Run SlideUp Test</button>
+        <div id="slideUpBox" class="test-box" style="opacity: 0;">SlideUp Test</div>
+        <div id="slideUpStatus" class="status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: ScaleUp Animation</h2>
+        <button onclick="testScaleUp()">Run ScaleUp Test</button>
+        <div id="scaleUpBox" class="test-box" style="opacity: 0;">ScaleUp Test</div>
+        <div id="scaleUpStatus" class="status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 4: Stagger Animation</h2>
+        <button onclick="testStagger()">Run Stagger Test</button>
+        <div class="test-boxes" id="staggerBoxes">
+            <div class="test-box" style="opacity: 0;">Box 1</div>
+            <div class="test-box" style="opacity: 0;">Box 2</div>
+            <div class="test-box" style="opacity: 0;">Box 3</div>
+            <div class="test-box" style="opacity: 0;">Box 4</div>
+        </div>
+        <div id="staggerStatus" class="status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 5: Configuration & Reduced Motion</h2>
+        <button onclick="testConfig()">Check Config</button>
+        <div id="configStatus" class="status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 6: GPU Acceleration Check</h2>
+        <button onclick="testGPUAcceleration()">Check GPU Properties</button>
+        <div id="gpuStatus" class="status"></div>
+    </div>
+    
+    <script src="sweetbee.js"></script>
+    <script>
+        // Verify AnimationEngine is loaded
+        if (typeof AnimationEngine === 'undefined') {
+            document.body.innerHTML = '<h1 style="color: red;">Error: AnimationEngine module not loaded!</h1>';
+        } else {
+            console.log('✓ AnimationEngine module loaded successfully');
+        }
+        
+        // Test FadeIn animation
+        function testFadeIn() {
+            const box = document.getElementById('fadeInBox');
+            const status = document.getElementById('fadeInStatus');
+            
+            // Reset
+            box.style.opacity = '0';
+            status.innerHTML = '<span class="info">Running fadeIn animation...</span>';
+            
+            const startTime = performance.now();
+            AnimationEngine.fadeIn(box, 500).then(() => {
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                status.innerHTML = `<span class="success">✓ FadeIn completed in ${duration.toFixed(2)}ms</span>`;
+            });
+        }
+        
+        // Test SlideUp animation
+        function testSlideUp() {
+            const box = document.getElementById('slideUpBox');
+            const status = document.getElementById('slideUpStatus');
+            
+            // Reset
+            box.style.opacity = '0';
+            box.style.transform = '';
+            status.innerHTML = '<span class="info">Running slideUp animation...</span>';
+            
+            const startTime = performance.now();
+            AnimationEngine.slideUp(box, 500, 30).then(() => {
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                status.innerHTML = `<span class="success">✓ SlideUp completed in ${duration.toFixed(2)}ms</span>`;
+            });
+        }
+        
+        // Test ScaleUp animation
+        function testScaleUp() {
+            const box = document.getElementById('scaleUpBox');
+            const status = document.getElementById('scaleUpStatus');
+            
+            // Reset
+            box.style.opacity = '0';
+            box.style.transform = '';
+            status.innerHTML = '<span class="info">Running scaleUp animation...</span>';
+            
+            const startTime = performance.now();
+            AnimationEngine.scaleUp(box, 500, 0.8, 1).then(() => {
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                status.innerHTML = `<span class="success">✓ ScaleUp completed in ${duration.toFixed(2)}ms</span>`;
+            });
+        }
+        
+        // Test Stagger animation
+        function testStagger() {
+            const boxes = document.querySelectorAll('#staggerBoxes .test-box');
+            const status = document.getElementById('staggerStatus');
+            
+            // Reset all boxes
+            boxes.forEach(box => {
+                box.style.opacity = '0';
+                box.style.transform = '';
+            });
+            
+            status.innerHTML = '<span class="info">Running stagger animation with 100ms delay...</span>';
+            
+            const startTime = performance.now();
+            AnimationEngine.stagger(boxes, AnimationEngine.slideUp, 100, 300).then(() => {
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                status.innerHTML = `<span class="success">✓ Stagger completed in ${duration.toFixed(2)}ms (expected: ~${300 + (boxes.length - 1) * 100}ms)</span>`;
+            });
+        }
+        
+        // Test configuration
+        function testConfig() {
+            const status = document.getElementById('configStatus');
+            const config = AnimationEngine.getConfig();
+            
+            let configHTML = '<strong>Current Configuration:</strong><br>';
+            configHTML += `Default Duration: ${config.defaultDuration}ms<br>`;
+            configHTML += `Stagger Delay: ${config.staggerDelay}ms<br>`;
+            configHTML += `Target FPS: ${config.targetFPS}<br>`;
+            configHTML += `Frame Time: ${config.frameTime.toFixed(2)}ms<br>`;
+            configHTML += `<strong>Prefers Reduced Motion:</strong> ${config.prefersReducedMotion ? 'YES ✓' : 'NO'}<br>`;
+            
+            status.innerHTML = configHTML;
+        }
+        
+        // Test GPU acceleration properties
+        function testGPUAcceleration() {
+            const status = document.getElementById('gpuStatus');
+            const testBox = document.createElement('div');
+            testBox.style.cssText = 'opacity: 0; transform: translateY(30px);';
+            document.body.appendChild(testBox);
+            
+            AnimationEngine.slideUp(testBox, 100).then(() => {
+                const computedStyle = window.getComputedStyle(testBox);
+                const transition = computedStyle.transition;
+                const transform = computedStyle.transform;
+                const opacity = computedStyle.opacity;
+                
+                let gpuHTML = '<strong>GPU Acceleration Check:</strong><br>';
+                gpuHTML += `✓ Uses transform property: ${transform !== 'none' ? 'YES' : 'NO'}<br>`;
+                gpuHTML += `✓ Uses opacity property: ${opacity !== '0' ? 'YES' : 'NO'}<br>`;
+                gpuHTML += `✓ CSS Transition: ${transition.includes('transform') && transition.includes('opacity') ? 'YES' : 'NO'}<br>`;
+                gpuHTML += `<br><em>Transform and opacity are GPU-accelerated properties</em>`;
+                
+                status.innerHTML = gpuHTML;
+                document.body.removeChild(testBox);
+            });
+        }
+        
+        // Run config test on load
+        window.addEventListener('DOMContentLoaded', () => {
+            testConfig();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation Engine - Usage Example</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .demo-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .demo-section h2 {
+            color: #ffc107;
+            margin-top: 0;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .demo-box {
+            background: #ffc107;
+            color: #000;
+            padding: 40px 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .demo-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-card h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        .feature-card .icon {
+            font-size: 3em;
+            color: #ffc107;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            background: #ffc107;
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #ffb300;
+            transform: scale(1.05);
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .code-example {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .code-example .comment {
+            color: #6a9955;
+        }
+        
+        .code-example .keyword {
+            color: #569cd6;
+        }
+        
+        .code-example .function {
+            color: #dcdcaa;
+        }
+        
+        .info-box {
+            background: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Animation Engine</h1>
+    <p class="subtitle">GPU-Accelerated Animations with Reduced Motion Support</p>
+    
+    <div class="demo-section">
+        <h2>📖 About</h2>
+        <p>The Animation Engine provides smooth, performant animations using GPU-accelerated CSS properties (transform and opacity). It includes support for reduced motion preferences and maintains a 60fps target.</p>
+        
+        <div class="info-box">
+            <strong>Key Features:</strong>
+            <ul>
+                <li>✓ GPU-accelerated (transform & opacity only)</li>
+                <li>✓ 60fps target with requestAnimationFrame</li>
+                <li>✓ Automatic reduced-motion support</li>
+                <li>✓ Promise-based API for easy chaining</li>
+                <li>✓ Configurable durations and delays</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>🎬 Demo 1: FadeIn Animation</h2>
+        <p>Click the button to see fadeIn animation in action:</p>
+        <div class="controls">
+            <button class="btn" onclick="runFadeInDemo()">Run FadeIn</button>
+        </div>
+        <div class="demo-grid">
+            <div class="demo-box" id="fadeBox1" style="opacity: 0;">Box 1</div>
+            <div class="demo-box" id="fadeBox2" style="opacity: 0;">Box 2</div>
+            <div class="demo-box" id="fadeBox3" style="opacity: 0;">Box 3</div>
+        </div>
+        
+        <div class="code-example">
+<span class="comment">// FadeIn with 500ms duration</span>
+<span class="keyword">const</span> element = document.<span class="function">getElementById</span>(<span class="string">'myElement'</span>);
+AnimationEngine.<span class="function">fadeIn</span>(element, 500)
+    .<span class="function">then</span>(() => console.<span class="function">log</span>(<span class="string">'Animation complete!'</span>));
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>⬆️ Demo 2: SlideUp Animation</h2>
+        <p>Click the button to see slideUp animation:</p>
+        <div class="controls">
+            <button class="btn" onclick="runSlideUpDemo()">Run SlideUp</button>
+        </div>
+        <div class="demo-grid">
+            <div class="demo-box" id="slideBox1" style="opacity: 0;">Slide 1</div>
+            <div class="demo-box" id="slideBox2" style="opacity: 0;">Slide 2</div>
+            <div class="demo-box" id="slideBox3" style="opacity: 0;">Slide 3</div>
+        </div>
+        
+        <div class="code-example">
+<span class="comment">// SlideUp with 500ms duration and 30px distance</span>
+AnimationEngine.<span class="function">slideUp</span>(element, 500, 30);
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>🔍 Demo 3: ScaleUp Animation</h2>
+        <p>Click the button to see scaleUp animation:</p>
+        <div class="controls">
+            <button class="btn" onclick="runScaleUpDemo()">Run ScaleUp</button>
+        </div>
+        <div class="demo-grid">
+            <div class="demo-box" id="scaleBox1" style="opacity: 0;">Scale 1</div>
+            <div class="demo-box" id="scaleBox2" style="opacity: 0;">Scale 2</div>
+            <div class="demo-box" id="scaleBox3" style="opacity: 0;">Scale 3</div>
+        </div>
+        
+        <div class="code-example">
+<span class="comment">// ScaleUp from 0.8 to 1.0 in 500ms</span>
+AnimationEngine.<span class="function">scaleUp</span>(element, 500, 0.8, 1.0);
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>🎯 Demo 4: Stagger Animation</h2>
+        <p>Animate multiple elements with a stagger delay:</p>
+        <div class="controls">
+            <button class="btn" onclick="runStaggerDemo()">Run Stagger (100ms delay)</button>
+            <button class="btn" onclick="runStaggerFastDemo()">Run Stagger (50ms delay)</button>
+        </div>
+        <div class="feature-cards" id="staggerCards">
+            <div class="feature-card" style="opacity: 0;">
+                <div class="icon">🚀</div>
+                <h3>Fast Performance</h3>
+                <p>60fps target with optimized GPU acceleration</p>
+            </div>
+            <div class="feature-card" style="opacity: 0;">
+                <div class="icon">♿</div>
+                <h3>Accessible</h3>
+                <p>Respects prefers-reduced-motion settings</p>
+            </div>
+            <div class="feature-card" style="opacity: 0;">
+                <div class="icon">⚙️</div>
+                <h3>Configurable</h3>
+                <p>Customize durations and delays</p>
+            </div>
+            <div class="feature-card" style="opacity: 0;">
+                <div class="icon">🎨</div>
+                <h3>Smooth</h3>
+                <p>Promise-based API for easy chaining</p>
+            </div>
+        </div>
+        
+        <div class="code-example">
+<span class="comment">// Stagger animation on multiple elements</span>
+<span class="keyword">const</span> elements = document.<span class="function">querySelectorAll</span>(<span class="string">'.feature-card'</span>);
+AnimationEngine.<span class="function">stagger</span>(
+    elements,
+    AnimationEngine.slideUp,  <span class="comment">// Animation function</span>
+    100,                      <span class="comment">// Stagger delay (ms)</span>
+    300                       <span class="comment">// Animation duration (ms)</span>
+);
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>⚙️ Configuration</h2>
+        <p>View and modify Animation Engine configuration:</p>
+        <div class="controls">
+            <button class="btn" onclick="showConfig()">Show Config</button>
+        </div>
+        <div id="configOutput" class="code-example" style="display: none;"></div>
+        
+        <div class="code-example">
+<span class="comment">// Get current configuration</span>
+<span class="keyword">const</span> config = AnimationEngine.<span class="function">getConfig</span>();
+
+<span class="comment">// Update configuration</span>
+AnimationEngine.<span class="function">updateConfig</span>({
+    defaultDuration: 500,
+    staggerDelay: 150
+});
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>🎛️ API Reference</h2>
+        <div class="code-example">
+<span class="comment">// Available Methods:</span>
+
+<span class="function">AnimationEngine.fadeIn</span>(element, duration)
+  <span class="comment">// Fade in animation using opacity</span>
+  <span class="comment">// Returns: Promise</span>
+
+<span class="function">AnimationEngine.slideUp</span>(element, duration, distance)
+  <span class="comment">// Slide up animation using translateY</span>
+  <span class="comment">// Returns: Promise</span>
+
+<span class="function">AnimationEngine.scaleUp</span>(element, duration, fromScale, toScale)
+  <span class="comment">// Scale up animation using scale transform</span>
+  <span class="comment">// Returns: Promise</span>
+
+<span class="function">AnimationEngine.stagger</span>(elements, animationFn, staggerDelay, duration)
+  <span class="comment">// Animate multiple elements with delay between each</span>
+  <span class="comment">// Returns: Promise (resolves when all complete)</span>
+
+<span class="function">AnimationEngine.getConfig</span>()
+  <span class="comment">// Get current configuration object</span>
+  <span class="comment">// Returns: Object with config values</span>
+
+<span class="function">AnimationEngine.updateConfig</span>(newConfig)
+  <span class="comment">// Update configuration values</span>
+
+<span class="keyword">AnimationEngine.prefersReducedMotion</span>
+  <span class="comment">// Boolean indicating user's motion preference</span>
+        </div>
+    </div>
+    
+    <script src="sweetbee.js"></script>
+    <script>
+        function runFadeInDemo() {
+            const boxes = ['fadeBox1', 'fadeBox2', 'fadeBox3'];
+            boxes.forEach((id, index) => {
+                const box = document.getElementById(id);
+                box.style.opacity = '0';
+                setTimeout(() => {
+                    AnimationEngine.fadeIn(box, 500);
+                }, index * 150);
+            });
+        }
+        
+        function runSlideUpDemo() {
+            const boxes = ['slideBox1', 'slideBox2', 'slideBox3'];
+            boxes.forEach((id, index) => {
+                const box = document.getElementById(id);
+                box.style.opacity = '0';
+                box.style.transform = '';
+                setTimeout(() => {
+                    AnimationEngine.slideUp(box, 500, 30);
+                }, index * 150);
+            });
+        }
+        
+        function runScaleUpDemo() {
+            const boxes = ['scaleBox1', 'scaleBox2', 'scaleBox3'];
+            boxes.forEach((id, index) => {
+                const box = document.getElementById(id);
+                box.style.opacity = '0';
+                box.style.transform = '';
+                setTimeout(() => {
+                    AnimationEngine.scaleUp(box, 500, 0.8, 1);
+                }, index * 150);
+            });
+        }
+        
+        function runStaggerDemo() {
+            const cards = document.querySelectorAll('#staggerCards .feature-card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = '';
+            });
+            
+            setTimeout(() => {
+                AnimationEngine.stagger(cards, AnimationEngine.slideUp, 100, 300);
+            }, 100);
+        }
+        
+        function runStaggerFastDemo() {
+            const cards = document.querySelectorAll('#staggerCards .feature-card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = '';
+            });
+            
+            setTimeout(() => {
+                AnimationEngine.stagger(cards, AnimationEngine.slideUp, 50, 300);
+            }, 100);
+        }
+        
+        function showConfig() {
+            const config = AnimationEngine.getConfig();
+            const output = document.getElementById('configOutput');
+            output.style.display = 'block';
+            output.innerHTML = `
+{
+  defaultDuration: ${config.defaultDuration}ms,
+  staggerDelay: ${config.staggerDelay}ms,
+  targetFPS: ${config.targetFPS},
+  frameTime: ${config.frameTime.toFixed(2)}ms,
+  prefersReducedMotion: ${config.prefersReducedMotion}
+}
+            `;
+        }
+        
+        // Auto-run first demo on load
+        window.addEventListener('load', () => {
+            setTimeout(runFadeInDemo, 500);
+        });
+    </script>
+</body>
+</html>
