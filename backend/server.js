@@ -22,9 +22,13 @@ const IMAGE_BASE = process.env.LOCAL_IP && process.env.LOCAL_IP.includes('onrend
 let db;
 
 async function connectDB() {
-    const client = new MongoClient(process.env.MONGODB_URI);
+    const client = new MongoClient(process.env.MONGODB_URI, {
+        tls: true,
+        tlsAllowInvalidCertificates: false,
+        serverSelectionTimeoutMS: 10000,
+    });
     await client.connect();
-    db = client.db('sweetbee'); // database name
+    db = client.db('sweetbee');
     console.log('✅ Connected to MongoDB Atlas');
 }
 
