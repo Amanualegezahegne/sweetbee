@@ -1,258 +1,344 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
+const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
 
 const app = express();
-const PORT = 3001;
-const LOCAL_IP = '192.168.125.11'; // ✅ Your local network IP
+const PORT = process.env.PORT || 3001;
+const LOCAL_IP = process.env.LOCAL_IP || 'localhost';
 
+// ============================================================
+// Supabase Client (uses SERVICE ROLE KEY — never expose to browser)
+// ============================================================
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+// ============================================================
 // Middleware
+// ============================================================
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve uploaded images locally
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Ensure uploads folder exists
 if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
 
-const MESSAGE_FILE = path.join(__dirname, 'messages.json');
-const PRODUCT_FILE = path.join(__dirname, 'products.json');
-const ADMIN_FILE = path.join(__dirname, 'admin.json');
-
-// ------------ Helper functions ------------
-function loadMessages() {
-    if (fs.existsSync(MESSAGE_FILE)) {
-        return JSON.parse(fs.readFileSync(MESSAGE_FILE, 'utf-8'));
-    }
-    return [];
-}
-function saveMessages(messages) {
-    fs.writeFileSync(MESSAGE_FILE, JSON.stringify(messages, null, 2));
-}
-function loadProducts() {
-    if (fs.existsSync(PRODUCT_FILE)) {
-        return JSON.parse(fs.readFileSync(PRODUCT_FILE, 'utf-8'));
-    }
-    return [];
-}
-function saveProducts(products) {
-    fs.writeFileSync(PRODUCT_FILE, JSON.stringify(products, null, 2));
-}
-
-// ------------ Admin storage functions ------------
-function loadAdmin() {
-    if (fs.existsSync(ADMIN_FILE)) {
-        return JSON.parse(fs.readFileSync(ADMIN_FILE, 'utf-8'));
-    }
-    // Default admin credentials
-    const defaultAdmin = {
-        username: 'admin',
-        password: 'admin1234',
-        email: 'amanualegezahegne2066@gmail.com',
-    };
-    fs.writeFileSync(ADMIN_FILE, JSON.stringify(defaultAdmin, null, 2));
-    return defaultAdmin;
-}
-function saveAdmin(adminData) {
-    fs.writeFileSync(ADMIN_FILE, JSON.stringify(adminData, null, 2));
-}
-
-// ------------ Admin credentials ------------
-let adminCredentials = loadAdmin();
-let resetTokens = {}; // { email: { otp, expires, verified } }
-
-// ------------ Contact API ------------
-app.post('/contact', (req, res) => {
-    const { name, email, phone, message } = req.body;
-    if (!name || !email || !message) {
-        return res.status(400).json({ success: false, message: 'Missing required fields' });
-    }
-    const newMsg = {
-        id: uuidv4(),
-        name,
-        email,
-        phone,
-        message,
-        date: new Date().toISOString(),
-    };
-    const messages = loadMessages();
-    messages.push(newMsg);
-    saveMessages(messages);
-    res.status(201).json({ success: true, message: 'Message received' });
-});
-
-app.get('/admin/messages', (req, res) => {
-    res.json(loadMessages());
-});
-
-app.delete('/admin/messages/:id', (req, res) => {
-    const id = req.params.id;
-    const messages = loadMessages();
-    const updated = messages.filter(msg => msg.id !== id);
-    if (updated.length === messages.length) {
-        return res.status(404).json({ message: 'Message not found' });
-    }
-    saveMessages(updated);
-    res.json({ message: 'Message deleted successfully' });
-});
-
-// ------------ Product API ------------
+// ============================================================
+// Multer — local image storage
+// ============================================================
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, 'uploads'),
     filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
 });
-const upload = multer({ storage });
+const upload = multer({
+    storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max
+    fileFilter: (req, file, cb) => {
+        const allowed = /jpeg|jpg|png|gif|webp/;
+        const ok = allowed.test(path.extname(file.originalname).toLowerCase()) &&
+                   allowed.test(file.mimetype);
+        cb(ok ? null : new Error('Only image files are allowed'), ok);
+    },
+});
 
-app.post('/admin/products', upload.single('image'), (req, res) => {
+// ============================================================
+// Helper: send error response
+// ============================================================
+function sendError(res, status, message, details) {
+    const body = { success: false, message };
+    if (details) body.details = details;
+    return res.status(status).json(body);
+}
+
+// ============================================================
+// PRODUCTS API
+// ============================================================
+
+// GET /admin/products — public
+app.get('/admin/products', async (req, res) => {
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) return sendError(res, 500, 'Failed to fetch products', error.message);
+    res.json(data);
+});
+
+// POST /admin/products — add product with image upload
+app.post('/admin/products', upload.single('image'), async (req, res) => {
     const { name, price, description } = req.body;
+
     if (!req.file || !name || !price || !description) {
-        return res.status(400).json({ message: 'Missing fields or image' });
+        return sendError(res, 400, 'Missing fields or image');
     }
+
     const imageUrl = `http://${LOCAL_IP}:${PORT}/uploads/${req.file.filename}`;
-    const product = { id: uuidv4(), name, price, description, imageUrl };
-    const products = loadProducts();
-    products.push(product);
-    saveProducts(products);
-    res.status(201).json({ message: 'Product added', product });
+
+    const { data, error } = await supabase
+        .from('products')
+        .insert([{ name, price: parseFloat(price), description, image_url: imageUrl }])
+        .select()
+        .single();
+
+    if (error) return sendError(res, 500, 'Failed to add product', error.message);
+    res.status(201).json({ message: 'Product added', product: data });
 });
 
-app.get('/admin/products', (req, res) => {
-    res.json(loadProducts());
-});
+// DELETE /admin/products/:id
+app.delete('/admin/products/:id', async (req, res) => {
+    const { id } = req.params;
 
-app.delete('/admin/products/:id', (req, res) => {
-    const id = req.params.id;
-    const products = loadProducts();
-    const updated = products.filter(p => p.id !== id);
-    if (updated.length === products.length) {
-        return res.status(404).json({ message: 'Product not found' });
-    }
-    saveProducts(updated);
+    const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', id);
+
+    if (error) return sendError(res, 500, 'Failed to delete product', error.message);
     res.json({ message: 'Product deleted' });
 });
 
-// ------------ Admin Login ------------
-app.post('/admin/login', (req, res) => {
-    const { username, password } = req.body;
-    if (username === adminCredentials.username && password === adminCredentials.password) {
-        return res.json({ success: true });
+// ============================================================
+// CONTACT / MESSAGES API
+// ============================================================
+
+// POST /contact — save contact form submission
+app.post('/contact', async (req, res) => {
+    const { name, email, phone, message } = req.body;
+
+    if (!name || !email || !message) {
+        return sendError(res, 400, 'Missing required fields');
     }
-    return res.json({ success: false });
+
+    const { error } = await supabase
+        .from('messages')
+        .insert([{ name, email, phone, message }]);
+
+    if (error) return sendError(res, 500, 'Failed to save message', error.message);
+    res.status(201).json({ success: true, message: 'Message received' });
 });
 
-// ------------ Reset Password Request (Send OTP) ------------
-app.post('/admin/reset-request', (req, res) => {
+// GET /admin/messages — get all contact messages
+app.get('/admin/messages', async (req, res) => {
+    const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .order('date', { ascending: false });
+
+    if (error) return sendError(res, 500, 'Failed to fetch messages', error.message);
+    res.json(data);
+});
+
+// DELETE /admin/messages/:id
+app.delete('/admin/messages/:id', async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from('messages')
+        .delete()
+        .eq('id', id);
+
+    if (error) return sendError(res, 500, 'Failed to delete message', error.message);
+    res.json({ message: 'Message deleted successfully' });
+});
+
+// PATCH /admin/messages/:id/read — mark as read
+app.patch('/admin/messages/:id/read', async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase
+        .from('messages')
+        .update({ read: true })
+        .eq('id', id);
+
+    if (error) return sendError(res, 500, 'Failed to mark message as read', error.message);
+    res.json({ success: true });
+});
+
+// ============================================================
+// ADMIN AUTH API
+// ============================================================
+
+// POST /admin/login
+app.post('/admin/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    const { data, error } = await supabase
+        .from('admin')
+        .select('*')
+        .eq('username', username)
+        .eq('password_hash', password)
+        .single();
+
+    if (error || !data) {
+        return res.json({ success: false });
+    }
+    res.json({ success: true });
+});
+
+// POST /admin/check-password
+app.post('/admin/check-password', async (req, res) => {
+    const { currentPassword } = req.body;
+
+    const { data, error } = await supabase
+        .from('admin')
+        .select('id')
+        .eq('password_hash', currentPassword)
+        .single();
+
+    res.json({ valid: !error && !!data });
+});
+
+// POST /admin/update-profile
+app.post('/admin/update-profile', async (req, res) => {
+    const { username, email, newPassword } = req.body;
+
+    if (!username || !email || !newPassword) {
+        return sendError(res, 400, 'All fields are required.');
+    }
+
+    // Update all admin rows (only one admin exists)
+    const { error } = await supabase
+        .from('admin')
+        .update({ username, email, password_hash: newPassword })
+        .not('id', 'is', null); // update all rows
+
+    if (error) return sendError(res, 500, 'Failed to update profile', error.message);
+    res.json({ message: 'Profile updated successfully!' });
+});
+
+// ============================================================
+// PASSWORD RESET — OTP Flow
+// ============================================================
+
+// POST /admin/reset-request — send OTP email
+app.post('/admin/reset-request', async (req, res) => {
     const { email } = req.body;
-    if (email !== adminCredentials.email) {
+
+    // Check email exists in admin table
+    const { data: adminRow, error: findError } = await supabase
+        .from('admin')
+        .select('email')
+        .eq('email', email)
+        .single();
+
+    if (findError || !adminRow) {
         return res.status(404).json({ message: 'Admin email not found.' });
     }
 
     // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 min
 
-    resetTokens[email] = {
-        otp,
-        expires: Date.now() + 10 * 60 * 1000, // valid 10 minutes
-        verified: false,
-    };
+    // Delete old tokens for this email first
+    await supabase.from('reset_tokens').delete().eq('email', email);
 
-    // Send OTP via email
+    // Insert new token
+    const { error: insertError } = await supabase
+        .from('reset_tokens')
+        .insert([{ email, otp, expires_at: expiresAt }]);
+
+    if (insertError) return sendError(res, 500, 'Failed to create reset token', insertError.message);
+
+    // Send OTP email
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'amanualegezahegne2066@gmail.com',
-            pass: 'egsmfjryxmdsgutc',
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS,
         },
     });
 
     const mailOptions = {
-        from: `"SweetBee Admin" <amanualegezahegne2066@gmail.com>`,
+        from: `"SweetBee Admin" <${process.env.MAIL_USER}>`,
         to: email,
         subject: 'Your Password Reset Code',
         html: `<p>Your confirmation code is: <b>${otp}</b></p>
                <p>This code will expire in 10 minutes.</p>`,
     };
 
-    transporter.sendMail(mailOptions, (error) => {
-        if (error) {
-            console.error('Mail error:', error);
+    transporter.sendMail(mailOptions, (mailError) => {
+        if (mailError) {
+            console.error('Mail error:', mailError);
             return res.status(500).json({ message: 'Failed to send OTP.' });
         }
         res.json({ message: 'OTP sent to your email.' });
     });
 });
 
-// ------------ Verify OTP ------------
-app.post('/admin/verify-otp', (req, res) => {
+// POST /admin/verify-otp
+app.post('/admin/verify-otp', async (req, res) => {
     const { email, otp } = req.body;
-    const record = resetTokens[email];
 
-    if (!record) {
-        return res.status(400).json({ success: false, message: 'No reset request found.' });
-    }
-    if (record.expires < Date.now()) {
-        delete resetTokens[email];
-        return res.status(400).json({ success: false, message: 'OTP expired.' });
-    }
-    if (record.otp !== otp) {
+    const { data: record, error } = await supabase
+        .from('reset_tokens')
+        .select('*')
+        .eq('email', email)
+        .eq('otp', otp)
+        .single();
+
+    if (error || !record) {
         return res.status(400).json({ success: false, message: 'Invalid OTP.' });
     }
+    if (new Date(record.expires_at) < new Date()) {
+        await supabase.from('reset_tokens').delete().eq('email', email);
+        return res.status(400).json({ success: false, message: 'OTP expired.' });
+    }
 
-    // ✅ Mark OTP as verified
-    resetTokens[email].verified = true;
+    // Mark as verified
+    await supabase
+        .from('reset_tokens')
+        .update({ verified: true })
+        .eq('email', email);
+
     res.json({ success: true, message: 'OTP verified. You can now reset your password.' });
 });
 
-// ------------ Reset Password After OTP Verification ------------
-app.post('/admin/reset-password', (req, res) => {
+// POST /admin/reset-password
+app.post('/admin/reset-password', async (req, res) => {
     const { email, newPassword } = req.body;
-    const record = resetTokens[email];
 
-    if (!record || !record.verified) {
+    // Check token is verified
+    const { data: record, error } = await supabase
+        .from('reset_tokens')
+        .select('verified')
+        .eq('email', email)
+        .single();
+
+    if (error || !record || !record.verified) {
         return res.status(400).json({ success: false, message: 'OTP not verified.' });
     }
     if (!newPassword || newPassword.length < 6) {
         return res.status(400).json({ success: false, message: 'Password must be at least 6 characters.' });
     }
 
-    adminCredentials.password = newPassword;
-    saveAdmin(adminCredentials); // ✅ Save to file
-    delete resetTokens[email]; // Clear OTP after use
+    // Update password
+    const { error: updateError } = await supabase
+        .from('admin')
+        .update({ password_hash: newPassword })
+        .eq('email', email);
+
+    if (updateError) return sendError(res, 500, 'Failed to reset password', updateError.message);
+
+    // Delete used token
+    await supabase.from('reset_tokens').delete().eq('email', email);
 
     res.json({ success: true, message: 'Password successfully reset!' });
 });
 
-// ------------ Check Current Password ------------
-app.post('/admin/check-password', (req, res) => {
-    const { currentPassword } = req.body;
-    if (currentPassword === adminCredentials.password) {
-        return res.json({ valid: true });
-    }
-    res.json({ valid: false });
-});
-
-// ------------ Update Profile ------------
-app.post('/admin/update-profile', (req, res) => {
-    const { username, email, newPassword } = req.body;
-
-    if (!username || !email || !newPassword) {
-        return res.status(400).json({ message: 'All fields are required.' });
-    }
-
-    adminCredentials.username = username;
-    adminCredentials.email = email;
-    adminCredentials.password = newPassword;
-
-    saveAdmin(adminCredentials); // ✅ Persist to file
-
-    res.json({ message: 'Profile updated successfully!' });
-});
-
-// ------------ Start Server ------------
+// ============================================================
+// Start Server
+// ============================================================
 app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://${LOCAL_IP}:${PORT}`);
+    console.log(`🚀 SweetBee server running at http://${LOCAL_IP}:${PORT}`);
+    console.log(`📦 Supabase connected to: ${process.env.SUPABASE_URL || '⚠️  SUPABASE_URL not set'}`);
 });
