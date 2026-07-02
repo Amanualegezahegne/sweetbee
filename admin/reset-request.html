@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Forgot Password</title>
+    <title>SweetBee Admin — Forgot Password</title>
     <link rel="stylesheet" href="admin-full.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
+<body class="auth-body">
+    <div class="auth-card">
+        <div class="auth-logo">
+            <img src="images/logo.png" alt="SweetBee Logo" />
+            <span>SweetBee Admin</span>
+        </div>
+        <h2 class="auth-heading">Forgot Password</h2>
+        <p class="auth-sub">Enter your admin email and we'll send you a reset code</p>
 
-<body class="rp-body">
-    <div class="rp-container">
-        <h2 class="rp-title">🔑 Forgot Password</h2>
-        <form id="resetRequestForm" class="rp-form">
-            <input type="email" id="email" class="rp-input" placeholder="Enter your admin email" required />
-            <button type="submit" class="rp-button">Send Confirmation Code</button>
+        <div class="auth-error" id="reqError"></div>
+
+        <form id="resetRequestForm" class="auth-form">
+            <div class="auth-field">
+                <label for="email">Admin Email</label>
+                <input type="email" id="email" placeholder="your@email.com" required />
+            </div>
+            <button type="submit" class="auth-btn" id="reqBtn">
+                <i class="fas fa-paper-plane"></i> Send Reset Code
+            </button>
         </form>
-    </div>
 
-    <!-- External JS handles the logic -->
+        <div class="auth-link">
+            <a href="admin.html"><i class="fas fa-arrow-left"></i> Back to Login</a>
+        </div>
+    </div>
     <script src="admin-dashboard.js"></script>
 </body>
-
 </html>

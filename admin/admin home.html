@@ -1,61 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
-    <title>Admin Home page</title>
-    <!-- Link to external CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SweetBee Admin — Dashboard</title>
     <link rel="stylesheet" href="admin-full.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-
 <body>
+<div class="dash-layout">
 
-    <div>
-        <!-- 🔶 Header with Logo and Title -->
-        <div class="header-container">
-
-            <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
-            <h1>SweetBee Honey</h1>
+    <!-- Sidebar -->
+    <aside class="dash-sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <img src="images/logo.png" alt="SweetBee" />
+            <span>SweetBee</span>
         </div>
-
-        <nav>
-            <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
-
-            <a href="admin home.html">Home</a>
-            <a href="admin-message.html">Messages</a>
-            <a href="manage-product.html">Manage Products</a>
-            <a href="edit-profile.html">Edit profile</a>
-            <a href="admin.html" id="logout-link">Logout</a>
+        <nav class="sidebar-nav">
+            <a href="admin home.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="admin-message.html"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="manage-product.html"><i class="fas fa-box"></i> Products</a>
+            <div class="nav-divider"></div>
+            <a href="edit-profile.html"><i class="fas fa-user-cog"></i> Edit Profile</a>
+            <div class="nav-divider sidebar-logout"></div>
+            <a href="admin.html" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
+    </aside>
+    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-        <main>
-            <div class="card">
-                <h3>View Messages</h3>
-                <p>Check customer inquiries and feedback.</p>
-                <button onclick="location.href='admin-message.html'">Go</button>
+    <!-- Main -->
+    <div class="dash-main">
+        <header class="dash-topbar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                <span class="dash-topbar-title">Dashboard</span>
             </div>
-            <div class="card">
-                <h3>Manage Products</h3>
-                <p>Add, update, or remove store products.</p>
-                <button onclick="location.href='manage-product.html'">Go</button>
+            <div class="dash-topbar-right">
+                <span class="topbar-badge"><i class="fas fa-circle" style="font-size:8px;color:#22c55e;margin-right:5px;"></i>Live</span>
             </div>
-            <div class="card">
-                <h3>Reset Password</h3>
-                <p>Change your admin password securely.</p>
-                <button onclick="location.href='edit-profile.html'">Go</button>
+        </header>
+
+        <main class="dash-content">
+            <!-- Stats -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-box"></i></div>
+                    <div class="stat-info">
+                        <h3 id="productCount">—</h3>
+                        <p>Products</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="stat-info">
+                        <h3 id="messageCount">—</h3>
+                        <p>Messages</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-store"></i></div>
+                    <div class="stat-info">
+                        <h3>Live</h3>
+                        <p>Store Status</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="section-header">
+                <h2>Quick Actions</h2>
+            </div>
+            <div class="actions-grid">
+                <a href="admin-message.html" class="action-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>View Messages</h3>
+                    <p>Check customer inquiries and feedback</p>
+                </a>
+                <a href="manage-product.html" class="action-card">
+                    <i class="fas fa-box-open"></i>
+                    <h3>Manage Products</h3>
+                    <p>Add, update, or remove store products</p>
+                </a>
+                <a href="edit-profile.html" class="action-card">
+                    <i class="fas fa-user-cog"></i>
+                    <h3>Edit Profile</h3>
+                    <p>Update your admin credentials</p>
+                </a>
             </div>
         </main>
 
-        <footer class="footer">
-            <div class="footer-content">
-                <p>© 2025 SweetBee Honey. All rights reserved.</p>
-                <p class="footer-tagline">Crafted with care for our admins.</p>
-            </div>
-        </footer>
+        <footer class="dash-footer">© 2025 SweetBee Honey — Admin Panel</footer>
     </div>
+</div>
 
-    <!-- Link external JS -->
-    <script src="admin-dashboard.js"></script>
+<script src="admin-dashboard.js"></script>
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('show');
+    }
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('show');
+    }
+
+    // Load stats
+    async function loadStats() {
+        try {
+            const [products, messages] = await Promise.all([
+                fetch(`${API_BASE}/admin/products`).then(r => r.json()),
+                fetch(`${API_BASE}/admin/messages`).then(r => r.json()),
+            ]);
+            document.getElementById('productCount').textContent = Array.isArray(products) ? products.length : '—';
+            document.getElementById('messageCount').textContent = Array.isArray(messages) ? messages.length : '—';
+        } catch(e) {}
+    }
+    loadStats();
+</script>
 </body>
-
 </html>

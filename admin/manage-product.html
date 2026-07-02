@@ -1,58 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
-    <title>Admin Dashboard</title>
-    <!-- Link to external CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SweetBee Admin — Products</title>
     <link rel="stylesheet" href="admin-full.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-
 <body>
+<div class="dash-layout">
 
-
-    <div>
-
-        <!-- 🔶 Header with Logo and Title -->
-        <div class="header-container">
-            <div class="logo-title">
-                <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
-                <h1>SweetBee Honey</h1>
-            </div>
+    <aside class="dash-sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <img src="images/logo.png" alt="SweetBee" />
+            <span>SweetBee</span>
         </div>
-
-        <nav>
-            <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
-            <a href="admin home.html">Home</a>
-            <a href="admin-message.html">Messages</a>
-            <a href="manage-product.html">Manage Products</a>
-            <a href="edit-profile.html">Edit profile</a>
-            <a href="admin.html" onclick="logout()">Logout</a>
+        <nav class="sidebar-nav">
+            <a href="admin home.html"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="admin-message.html"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="manage-product.html" class="active"><i class="fas fa-box"></i> Products</a>
+            <div class="nav-divider"></div>
+            <a href="edit-profile.html"><i class="fas fa-user-cog"></i> Edit Profile</a>
+            <div class="nav-divider"></div>
+            <a href="admin.html" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
+    </aside>
+    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
+    <div class="dash-main">
+        <header class="dash-topbar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                <span class="dash-topbar-title">Manage Products</span>
+            </div>
+        </header>
 
+        <main class="dash-content">
+            <!-- Add Product Form -->
+            <div class="section-header">
+                <h2><i class="fas fa-plus" style="color:var(--brand);margin-right:8px;"></i>Add New Product</h2>
+            </div>
 
-        <!-- 🍯 Product Management Section -->
-        <section>
-            <h2>🍯 Manage Products</h2>
-            <form id="productForm" enctype="multipart/form-data">
-                <input type="text" id="productName" placeholder="Product Name" required />
-                <input type="text" id="productPrice" placeholder="Product Price (ETB)" required />
-                <textarea id="productDesc" placeholder="Product Description" required rows="4"></textarea>
-                <input type="file" id="productImage" accept="image/*" required />
-                <button type="submit">Add Product</button>
+            <form id="productForm" class="dash-form" enctype="multipart/form-data">
+                <div class="form-row">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" placeholder="e.g. Wild Honey" required />
+                </div>
+                <div class="form-row">
+                    <label for="productPrice">Price (ETB)</label>
+                    <input type="number" id="productPrice" placeholder="e.g. 450" required min="1" />
+                </div>
+                <div class="form-row">
+                    <label for="productDesc">Description</label>
+                    <textarea id="productDesc" placeholder="Describe the product…" required rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="productImage">Product Image</label>
+                    <input type="file" id="productImage" accept="image/*" required />
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Product
+                </button>
             </form>
 
-            <div id="productList">
-                <ul id="productItems" style="list-style: none; padding: 0;">
-                    <!-- Product items will be dynamically inserted here by JS -->
-                </ul>
+            <!-- Product List -->
+            <div class="section-header" style="margin-top:16px;">
+                <h2><i class="fas fa-box" style="color:var(--brand);margin-right:8px;"></i>All Products</h2>
             </div>
-        </section>
+
+            <div class="product-grid" id="productList">
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <p>Loading products…</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="dash-footer">© 2025 SweetBee Honey — Admin Panel</footer>
     </div>
+</div>
 
-    <!-- JavaScript logic -->
-    <script src="admin-dashboard.js"></script>
+<div id="admin-toast-container"></div>
+
+<script src="admin-dashboard.js"></script>
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('show');
+    }
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('show');
+    }
+</script>
 </body>
-
 </html>

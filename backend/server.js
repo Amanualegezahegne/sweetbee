@@ -200,30 +200,9 @@ async function seedAdmin() {
 app.post('/admin/login', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) return res.json({ success: false });
-    
-    // Find by username first, then check password
     const admin = await col.admin().findOne({ username });
     if (!admin) return res.json({ success: false });
-    
-    // Compare passwords (case-sensitive exact match)
-    const match = admin.password === password;
-    res.json({ success: match });
-});
-
-// TEMP: Get admin info for debugging (REMOVE AFTER FIXING)
-app.get('/admin/debug-admin', async (req, res) => {
-    const admin = await col.admin().findOne({});
-    if (!admin) return res.json({ error: 'No admin found' });
-    res.json({ username: admin.username, email: admin.email, passwordLength: admin.password?.length });
-});
-
-// TEMP: Force reset admin password (REMOVE AFTER FIXING)
-app.get('/admin/force-reset', async (req, res) => {
-    const result = await col.admin().updateOne(
-        {},
-        { $set: { password: '12345678', username: 'admin', email: 'amanualegezahegne2066@gmail.com' } }
-    );
-    res.json({ updated: result.modifiedCount, message: 'Admin credentials reset. Login with: admin / 12345678' });
+    res.json({ success: admin.password === password });
 });
 
 // POST check current password

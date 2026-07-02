@@ -1,71 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Login</title>
+    <title>SweetBee Admin — Login</title>
     <link rel="stylesheet" href="admin-full.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
+<body class="auth-body">
 
-<body class="login-body">
-    <div class="login-wrapper">
-
-        <!-- 🔶 Header with Logo -->
-        <div class="header-container">
-            <div class="logo-title">
-                <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
-                <h1>SweetBee Honey</h1>
-            </div>
+    <div class="auth-card">
+        <div class="auth-logo">
+            <img src="images/logo.png" alt="SweetBee Logo" />
+            <span>SweetBee Admin</span>
         </div>
+        <h2 class="auth-heading">Welcome back</h2>
+        <p class="auth-sub">Sign in to your admin dashboard</p>
 
-        <h2 class="page-title">🔐 Admin Login</h2>
+        <div class="auth-error" id="loginError"></div>
 
-        <form id="loginForm" class="admin-login-form">
-            <input type="text" id="username" placeholder="Username" required />
-            <input type="password" id="password" placeholder="Password" required />
-            <button type="submit" class="login-btn">Login</button>
+        <form id="loginForm" class="auth-form">
+            <div class="auth-field">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username" required autocomplete="username" />
+            </div>
+            <div class="auth-field">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" required autocomplete="current-password" />
+            </div>
+            <button type="submit" class="auth-btn" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
         </form>
 
-        <!-- Forgot Password Link -->
-        <p class="forgot-password">
-            <a href="reset-request.html">Forgot Password?</a>
-        </p>
-
+        <div class="auth-link">
+            <a href="reset-request.html"><i class="fas fa-key"></i> Forgot your password?</a>
+        </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const form = document.getElementById("loginForm");
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3001'
+            : 'https://sweetbee.onrender.com';
 
-            form.addEventListener("submit", async (e) => {
-                e.preventDefault();
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            const errEl = document.getElementById('loginError');
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
 
-                const username = document.getElementById("username").value.trim();
-                const password = document.getElementById("password").value.trim();
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in…';
+            errEl.classList.remove('show');
 
-                try {
-                    const res = await fetch(`${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : 'https://sweetbee-backend.onrender.com'}/admin/login`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ username, password }),
-                    });
-
-                    const data = await res.json();
-
-                    if (data.success) {
-                        alert("✅ Login successful!");
-                        window.location.href = "admin home.html";
-                    } else {
-                        alert("❌ Invalid credentials. Try again.");
-                    }
-                } catch (err) {
-                    console.error("Error during login:", err);
-                    alert("⚠️ Could not connect to server.");
+            try {
+                const res = await fetch(`${API_BASE}/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.href = 'admin home.html';
+                } else {
+                    errEl.textContent = '❌ Invalid credentials. Please try again.';
+                    errEl.classList.add('show');
                 }
-            });
+            } catch (err) {
+                errEl.textContent = '⚠️ Could not connect to server.';
+                errEl.classList.add('show');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+            }
         });
     </script>
 </body>
-
 </html>

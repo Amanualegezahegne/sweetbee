@@ -1,78 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Profile</title>
+    <title>SweetBee Admin — Edit Profile</title>
     <link rel="stylesheet" href="admin-full.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-<div>
-    <!-- 🔶 Header with Logo and Title -->
-    <div class="header-container">
-        <div class="logo-title">
-            <img src="images/logo.png" alt="Sweet Bee Honey Logo" class="logo" />
-            <h1>SweetBee Honey</h1>
+<body>
+<div class="dash-layout">
+
+    <aside class="dash-sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <img src="images/logo.png" alt="SweetBee" />
+            <span>SweetBee</span>
         </div>
+        <nav class="sidebar-nav">
+            <a href="admin home.html"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="admin-message.html"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="manage-product.html"><i class="fas fa-box"></i> Products</a>
+            <div class="nav-divider"></div>
+            <a href="edit-profile.html" class="active"><i class="fas fa-user-cog"></i> Edit Profile</a>
+            <div class="nav-divider"></div>
+            <a href="admin.html" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </aside>
+    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <div class="dash-main">
+        <header class="dash-topbar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                <span class="dash-topbar-title">Edit Profile</span>
+            </div>
+        </header>
+
+        <main class="dash-content">
+            <div class="section-header">
+                <h2><i class="fas fa-user-cog" style="color:var(--brand);margin-right:8px;"></i>Update Credentials</h2>
+            </div>
+
+            <div class="profile-form-wrap">
+                <h2>Account Settings</h2>
+                <form id="ep-form">
+                    <div class="ep-field">
+                        <label for="ep-username">Username</label>
+                        <input type="text" id="ep-username" name="username" placeholder="Enter new username" />
+                        <span class="ep-error" id="ep-username-error"></span>
+                    </div>
+                    <div class="ep-field">
+                        <label for="ep-email">Email Address</label>
+                        <input type="email" id="ep-email" name="email" placeholder="Enter new email" />
+                        <span class="ep-error" id="ep-email-error"></span>
+                    </div>
+                    <div class="ep-field">
+                        <label for="ep-current-password">Current Password</label>
+                        <input type="password" id="ep-current-password" name="currentPassword" placeholder="Enter current password" />
+                        <span class="ep-error" id="ep-current-password-error"></span>
+                    </div>
+                    <div class="ep-field">
+                        <label for="ep-new-password">New Password</label>
+                        <input type="password" id="ep-new-password" name="newPassword" placeholder="Min. 6 characters" />
+                        <span class="ep-error" id="ep-new-password-error"></span>
+                    </div>
+                    <div class="ep-field">
+                        <label for="ep-confirm-password">Confirm New Password</label>
+                        <input type="password" id="ep-confirm-password" name="confirmPassword" placeholder="Repeat new password" />
+                        <span class="ep-error" id="ep-confirm-password-error"></span>
+                    </div>
+                    <button type="submit" class="ep-btn" id="ep-submit">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <footer class="dash-footer">© 2025 SweetBee Honey — Admin Panel</footer>
     </div>
-    <nav>
-        <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
-        <a href="admin home.html">Home</a>
-        <a href="admin-message.html">Messages</a>
-        <a href="manage-product.html">Manage Products</a>
-        <a href="edit-profile.html">Edit profile</a>
-        <a href="admin.html" onclick="logout()">Logout</a>
-    </nav>
+</div>
 
+<div id="admin-toast-container"></div>
 
-
-
-    <div class="ep-container">
-        <h2 class="ep-title">Edit Profile</h2>
-        <form id="ep-form">
-
-            <!-- Username -->
-            <div class="ep-field">
-                <label for="ep-username">Username</label>
-                <input type="text" id="ep-username" name="username" />
-                <span class="ep-error" id="ep-username-error"></span>
-            </div>
-
-            <!-- Email -->
-            <div class="ep-field">
-                <label for="ep-email">Email</label>
-                <input type="email" id="ep-email" name="email" />
-                <span class="ep-error" id="ep-email-error"></span>
-            </div>
-
-            <!-- Current Password -->
-            <div class="ep-field">
-                <label for="ep-current-password">Current Password</label>
-                <input type="password" id="ep-current-password" name="currentPassword" />
-                <span class="ep-error" id="ep-current-password-error"></span>
-            </div>
-
-            <!-- New Password -->
-            <div class="ep-field">
-                <label for="ep-new-password">New Password</label>
-                <input type="password" id="ep-new-password" name="newPassword" />
-                <span class="ep-error" id="ep-new-password-error"></span>
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="ep-field">
-                <label for="ep-confirm-password">Confirm New Password</label>
-                <input type="password" id="ep-confirm-password" name="confirmPassword" />
-                <span class="ep-error" id="ep-confirm-password-error"></span>
-            </div>
-
-            <button type="submit" class="ep-btn" id="ep-submit">💾 Save Changes</button>
-        </form>
-    </div>
-
-
-
-    <script src="admin-dashboard.js"></script>
-    </body>
-
+<script src="admin-dashboard.js"></script>
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('show');
+    }
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('show');
+    }
+</script>
+</body>
 </html>

@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Confirm OTP</title>
+    <title>SweetBee Admin — Verify OTP</title>
     <link rel="stylesheet" href="admin-full.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
+<body class="auth-body">
+    <div class="auth-card">
+        <div class="auth-logo">
+            <img src="images/logo.png" alt="SweetBee Logo" />
+            <span>SweetBee Admin</span>
+        </div>
+        <h2 class="auth-heading">Check Your Email</h2>
+        <p class="auth-sub">We sent a 6-digit code to your email. Enter it below.</p>
 
-<body class="rp-body">
-    <div class="rp-container">
-        <h2 class="rp-title">📩 Confirm OTP</h2>
-        <form id="otpForm" class="rp-form">
-            <input type="text" id="otp" class="rp-input" placeholder="Enter 4/6 digit OTP" required />
-            <button type="submit" class="rp-button">Verify OTP</button>
+        <div class="auth-error" id="otpError"></div>
+
+        <form id="otpForm" class="auth-form">
+            <div class="auth-field">
+                <label for="otp">Verification Code</label>
+                <input type="text" id="otp" placeholder="Enter 6-digit code" required
+                       maxlength="6" inputmode="numeric" autocomplete="one-time-code"
+                       style="text-align:center;font-size:1.5rem;letter-spacing:0.3em;" />
+            </div>
+            <button type="submit" class="auth-btn" id="otpBtn">
+                <i class="fas fa-check-circle"></i> Verify Code
+            </button>
         </form>
-        <p id="message"></p>
+
+        <div class="auth-link">
+            <a href="reset-request.html"><i class="fas fa-arrow-left"></i> Resend code</a>
+        </div>
     </div>
     <script src="admin-dashboard.js"></script>
 </body>
-
 </html>
