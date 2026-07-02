@@ -11,6 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const LOCAL_IP = process.env.LOCAL_IP || 'localhost';
 
+// Image URL base — use Render URL in production
+const IMAGE_BASE = process.env.LOCAL_IP && process.env.LOCAL_IP.includes('onrender.com')
+    ? `https://${process.env.LOCAL_IP}`
+    : `http://${LOCAL_IP}:${PORT}`;
+
 // ============================================================
 // MongoDB Connection
 // ============================================================
@@ -34,7 +39,16 @@ const col = {
 // ============================================================
 // Middleware
 // ============================================================
-app.use(cors());
+app.use(cors({
+    origin: [
+        'http://localhost:5500',
+        'http://localhost:3000',
+        'http://127.0.0.1:5500',
+        /\.vercel\.app$/,
+        /\.onrender\.com$/,
+    ],
+    credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -86,7 +100,7 @@ app.post('/admin/products', upload.single('image'), async (req, res) => {
         return sendError(res, 400, 'Missing fields or image');
     }
     try {
-        const imageUrl = `http://${LOCAL_IP}:${PORT}/uploads/${req.file.filename}`;
+        const imageUrl = `${IMAGE_BASE}/uploads/${req.file.filename}`;
         const result = await col.products().insertOne({
             name,
             price: parseFloat(price),

@@ -1,5 +1,10 @@
 // ================== Admin Dashboard Functions ==================
 
+// Central API URL — localhost in dev, Render URL in production
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3001'
+    : 'https://sweetbee-backend.onrender.com';
+
 // Logout function
 function logout() {
     alert("You have been logged out.");
@@ -16,9 +21,9 @@ function toggleMenu() {
 document.addEventListener("DOMContentLoaded", function () {
     const productForm = document.getElementById("productForm");
     const editProfileForm = document.getElementById("ep-form");
-    const resetRequestForm = document.getElementById("resetRequestForm"); // Forgot password form
-    const otpForm = document.getElementById("otpForm"); // OTP confirmation page
-    const resetForm = document.getElementById("resetForm"); // New password page
+    const resetRequestForm = document.getElementById("resetRequestForm");
+    const otpForm = document.getElementById("otpForm");
+    const resetForm = document.getElementById("resetForm");
 
     if (productForm) productForm.addEventListener("submit", handleProductSubmit);
     if (editProfileForm) editProfileForm.addEventListener("submit", handleEditProfileSubmit);
@@ -51,7 +56,7 @@ async function handleProductSubmit(e) {
     formData.append("image", imageFile);
 
     try {
-        const res = await fetch("http://localhost:3001/admin/products", {
+        const res = await fetch(`${API_BASE}/admin/products`, {
             method: "POST",
             body: formData
         });
@@ -68,7 +73,7 @@ async function handleProductSubmit(e) {
 
 async function loadProducts() {
     try {
-        const res = await fetch("http://localhost:3001/admin/products");
+        const res = await fetch(`${API_BASE}/admin/products`);
         const products = await res.json();
 
         const list = document.getElementById("productItems");
@@ -104,7 +109,7 @@ async function deleteProduct(id) {
     if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
-        const res = await fetch(`http://localhost:3001/admin/products/${id}`, {
+        const res = await fetch(`${API_BASE}/admin/products/${id}`, {
             method: "DELETE",
         });
 
@@ -119,7 +124,7 @@ async function deleteProduct(id) {
 // ================== MESSAGES ==================
 async function loadMessages() {
     try {
-        const res = await fetch("http://localhost:3001/admin/messages");
+        const res = await fetch(`${API_BASE}/admin/messages`);
         const messages = await res.json();
 
         const tbody = document.getElementById("messageTableBody");
@@ -151,7 +156,7 @@ async function deleteMessage(id) {
     if (!confirm("Are you sure you want to delete this message?")) return;
 
     try {
-        const res = await fetch(`http://localhost:3001/admin/messages/${id}`, {
+        const res = await fetch(`${API_BASE}/admin/messages/${id}`, {
             method: "DELETE",
         });
 
@@ -195,7 +200,7 @@ async function handleEditProfileSubmit(e) {
     }
 
     try {
-        const checkRes = await fetch("http://localhost:3001/admin/check-password", {
+        const checkRes = await fetch(`${API_BASE}/admin/check-password`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ currentPassword })
@@ -223,7 +228,7 @@ async function handleEditProfileSubmit(e) {
     if (!valid) return;
 
     try {
-        const res = await fetch("http://localhost:3001/admin/update-profile", {
+        const res = await fetch(`${API_BASE}/admin/update-profile`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, email, newPassword })
@@ -238,13 +243,12 @@ async function handleEditProfileSubmit(e) {
 // ================== RESET PASSWORD WITH OTP ==================
 let globalEmail = "";
 
-// Step 1: Request OTP
 async function handleResetRequest(e) {
     e.preventDefault();
     globalEmail = document.getElementById("email").value.trim();
 
     try {
-        const res = await fetch("http://localhost:3001/admin/reset-request", {
+        const res = await fetch(`${API_BASE}/admin/reset-request`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: globalEmail })
@@ -254,7 +258,6 @@ async function handleResetRequest(e) {
         alert(data.message);
 
         if (res.ok) {
-            // Redirect to OTP page
             localStorage.setItem("resetEmail", globalEmail);
             window.location.href = "otp-confirmation.html";
         }
@@ -263,14 +266,13 @@ async function handleResetRequest(e) {
     }
 }
 
-// Step 2: Confirm OTP
 async function handleOtpConfirm(e) {
     e.preventDefault();
     const otp = document.getElementById("otp").value.trim();
     const email = localStorage.getItem("resetEmail");
 
     try {
-        const res = await fetch("http://localhost:3001/admin/verify-otp", {
+        const res = await fetch(`${API_BASE}/admin/verify-otp`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, otp })
@@ -287,7 +289,6 @@ async function handleOtpConfirm(e) {
     }
 }
 
-// Step 3: Reset password
 async function handlePasswordReset(e) {
     e.preventDefault();
     const newPassword = document.getElementById("newPassword").value.trim();
@@ -298,7 +299,6 @@ async function handlePasswordReset(e) {
     messageEl.textContent = "";
     messageEl.className = "";
 
-    // ✅ validation
     if (newPassword.length < 6) {
         messageEl.textContent = "❌ Password must be at least 6 characters.";
         messageEl.className = "error";
@@ -312,7 +312,7 @@ async function handlePasswordReset(e) {
     }
 
     try {
-        const res = await fetch("http://localhost:3001/admin/reset-password", {
+        const res = await fetch(`${API_BASE}/admin/reset-password`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, newPassword })
@@ -324,10 +324,7 @@ async function handlePasswordReset(e) {
             messageEl.textContent = "✅ Password reset successful! Redirecting...";
             messageEl.className = "success";
             localStorage.removeItem("resetEmail");
-
-            setTimeout(() => {
-                window.location.href = "admin.html"; // back to login
-            }, 5000);
+            setTimeout(() => { window.location.href = "admin.html"; }, 5000);
         } else {
             messageEl.textContent = "⚠️ " + (data.message || "Password reset failed.");
             messageEl.className = "error";

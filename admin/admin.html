@@ -45,7 +45,7 @@
                 const password = document.getElementById("password").value.trim();
 
                 try {
-                    const res = await fetch("http://localhost:3001/admin/login", {
+                    const res = await fetch(`${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : 'https://sweetbee-backend.onrender.com'}/admin/login`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ username, password }),

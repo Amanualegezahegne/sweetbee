@@ -4,6 +4,14 @@ function toggleMenu() {
     nav.classList.toggle("show");
 }
 
+// ============================================================
+// API BASE URL — points to Render backend in production,
+// localhost in development
+// ============================================================
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3001'
+    : 'https://sweetbee-backend.onrender.com';
+
 // 🎬 Intersection Observer Module for scroll-triggered animations
 // This module handles scroll-triggered animations for various sections
 // Requirements: 27.1, 27.2, 27.3, 27.4, 18.3, 22.6
@@ -591,7 +599,7 @@ async function loadProducts() {
     _renderSkeletons(container, 6);
 
     try {
-        const res = await fetch("http://localhost:3001/admin/products");
+        const res = await fetch(`${API_BASE}/admin/products`);
         if (!res.ok) throw new Error('HTTP ' + res.status);
 
         const products = await res.json();
@@ -1455,7 +1463,7 @@ document.addEventListener("DOMContentLoaded", function () {
             };
 
             try {
-                const response = await fetch("http://localhost:3001/contact", {
+                const response = await fetch(`${API_BASE}/contact`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(formData),
