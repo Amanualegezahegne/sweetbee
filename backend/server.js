@@ -199,8 +199,15 @@ async function seedAdmin() {
 // POST login
 app.post('/admin/login', async (req, res) => {
     const { username, password } = req.body;
-    const admin = await col.admin().findOne({ username, password });
-    res.json({ success: !!admin });
+    if (!username || !password) return res.json({ success: false });
+    
+    // Find by username first, then check password
+    const admin = await col.admin().findOne({ username });
+    if (!admin) return res.json({ success: false });
+    
+    // Compare passwords (case-sensitive exact match)
+    const match = admin.password === password;
+    res.json({ success: match });
 });
 
 // POST check current password
