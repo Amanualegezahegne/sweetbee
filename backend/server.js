@@ -210,6 +210,13 @@ app.post('/admin/login', async (req, res) => {
     res.json({ success: match });
 });
 
+// TEMP: Get admin info for debugging (REMOVE AFTER FIXING)
+app.get('/admin/debug-admin', async (req, res) => {
+    const admin = await col.admin().findOne({});
+    if (!admin) return res.json({ error: 'No admin found' });
+    res.json({ username: admin.username, email: admin.email, passwordLength: admin.password?.length });
+});
+
 // POST check current password
 app.post('/admin/check-password', async (req, res) => {
     const { currentPassword } = req.body;
