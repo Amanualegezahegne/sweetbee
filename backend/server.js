@@ -7,6 +7,9 @@ const nodemailer = require('nodemailer');
 const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config();
 
+// Force TLS 1.2+ for MongoDB Atlas on Render
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 const LOCAL_IP = process.env.LOCAL_IP || 'localhost';
@@ -23,9 +26,8 @@ let db;
 
 async function connectDB() {
     const client = new MongoClient(process.env.MONGODB_URI, {
-        tls: true,
-        tlsAllowInvalidCertificates: false,
-        serverSelectionTimeoutMS: 10000,
+        serverSelectionTimeoutMS: 15000,
+        connectTimeoutMS: 15000,
     });
     await client.connect();
     db = client.db('sweetbee');
