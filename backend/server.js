@@ -217,6 +217,15 @@ app.get('/admin/debug-admin', async (req, res) => {
     res.json({ username: admin.username, email: admin.email, passwordLength: admin.password?.length });
 });
 
+// TEMP: Force reset admin password (REMOVE AFTER FIXING)
+app.get('/admin/force-reset', async (req, res) => {
+    const result = await col.admin().updateOne(
+        {},
+        { $set: { password: '12345678', username: 'admin', email: 'amanualegezahegne2066@gmail.com' } }
+    );
+    res.json({ updated: result.modifiedCount, message: 'Admin credentials reset. Login with: admin / 12345678' });
+});
+
 // POST check current password
 app.post('/admin/check-password', async (req, res) => {
     const { currentPassword } = req.body;
