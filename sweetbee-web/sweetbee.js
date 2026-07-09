@@ -10,7 +10,7 @@ function toggleMenu() {
 // ============================================================
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:3001'
-    : 'https://sweetbee-backend.onrender.com';
+    : 'https://sweetbee.onrender.com';
 
 // 🎬 Intersection Observer Module for scroll-triggered animations
 // This module handles scroll-triggered animations for various sections
