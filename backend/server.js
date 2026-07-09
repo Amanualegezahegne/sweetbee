@@ -5,19 +5,22 @@ const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 const { MongoClient, ObjectId } = require('mongodb');
+const { v2: cloudinary } = require('cloudinary');
 require('dotenv').config();
-
-// Force TLS 1.2+ for MongoDB Atlas on Render
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const LOCAL_IP = process.env.LOCAL_IP || 'localhost';
 
-// Image URL base — use Render URL in production
-const IMAGE_BASE = process.env.LOCAL_IP && process.env.LOCAL_IP.includes('onrender.com')
-    ? `https://${process.env.LOCAL_IP}`
-    : `http://${LOCAL_IP}:${PORT}`;
+// ============================================================
+// Cloudinary Configuration
+// ============================================================
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+console.log('🌥️  Cloudinary configured:', process.env.CLOUDINARY_CLOUD_NAME ? '✅' : '❌ Missing credentials');
 
 // ============================================================
 // MongoDB Connection
@@ -25,10 +28,7 @@ const IMAGE_BASE = process.env.LOCAL_IP && process.env.LOCAL_IP.includes('onrend
 let db;
 
 async function connectDB() {
-    const client = new MongoClient(process.env.MONGODB_URI, {
-        serverSelectionTimeoutMS: 15000,
-        connectTimeoutMS: 15000,
-    });
+    const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
     db = client.db('sweetbee');
     console.log('✅ Connected to MongoDB Atlas');
@@ -57,17 +57,11 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
 
 // ============================================================
-// Multer — local image storage
+// Multer — memory storage for Cloudinary upload
 // ============================================================
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'uploads'),
-    filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
-});
+const storage = multer.memoryStorage();
 const upload = multer({
     storage,
     limits: { fileSize: 10 * 1024 * 1024 },
@@ -106,19 +100,37 @@ app.post('/admin/products', upload.single('image'), async (req, res) => {
         return sendError(res, 400, 'Missing fields or image');
     }
     try {
-        const imageUrl = `${IMAGE_BASE}/uploads/${req.file.filename}`;
-        const result = await col.products().insertOne({
-            name,
-            price: parseFloat(price),
-            description,
-            imageUrl,
-            createdAt: new Date(),
-        });
-        res.status(201).json({
-            message: 'Product added',
-            product: { id: result.insertedId.toString(), name, price, description, imageUrl },
-        });
+        // Upload to Cloudinary
+        const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: 'sweetbee-products', resource_type: 'image' },
+            async (error, result) => {
+                if (error) {
+                    console.error('❌ Cloudinary upload error:', error);
+                    return sendError(res, 500, 'Failed to upload image');
+                }
+
+                // Save product with Cloudinary URL
+                const product = {
+                    name,
+                    price: parseFloat(price),
+                    description,
+                    imageUrl: result.secure_url,
+                    cloudinaryId: result.public_id,
+                    createdAt: new Date(),
+                };
+
+                const dbResult = await col.products().insertOne(product);
+                res.status(201).json({
+                    message: 'Product added',
+                    product: { ...product, id: dbResult.insertedId.toString() },
+                });
+            }
+        );
+
+        // Pipe the buffer to Cloudinary
+        uploadStream.end(req.file.buffer);
     } catch (e) {
+        console.error('❌ Product add error:', e);
         sendError(res, 500, 'Failed to add product');
     }
 });
@@ -126,9 +138,23 @@ app.post('/admin/products', upload.single('image'), async (req, res) => {
 // DELETE product
 app.delete('/admin/products/:id', async (req, res) => {
     try {
+        const product = await col.products().findOne({ _id: new ObjectId(req.params.id) });
+        
+        // Delete from Cloudinary if public_id exists
+        if (product?.cloudinaryId) {
+            try {
+                await cloudinary.uploader.destroy(product.cloudinaryId);
+                console.log('🗑️  Deleted from Cloudinary:', product.cloudinaryId);
+            } catch (cloudErr) {
+                console.warn('⚠️  Failed to delete from Cloudinary:', cloudErr.message);
+            }
+        }
+
+        // Delete from MongoDB
         await col.products().deleteOne({ _id: new ObjectId(req.params.id) });
         res.json({ message: 'Product deleted' });
     } catch (e) {
+        console.error('❌ Delete error:', e);
         sendError(res, 500, 'Failed to delete product');
     }
 });
