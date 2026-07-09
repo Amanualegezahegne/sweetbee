@@ -8,6 +8,11 @@ const { MongoClient, ObjectId } = require('mongodb');
 const { v2: cloudinary } = require('cloudinary');
 require('dotenv').config();
 
+// Force TLS workaround for Render deployment
+if (process.env.NODE_ENV === 'production') {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 const LOCAL_IP = process.env.LOCAL_IP || 'localhost';
